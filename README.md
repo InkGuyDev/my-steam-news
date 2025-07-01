@@ -1,39 +1,31 @@
-# 11Sync ⚽📱
+# My Steam News 
 
-**11Sync** es una aplicación móvil diseñada para la planificación y administración de equipos de fútbol. Cada usuario puede registrarse con un rol específico (jugador, director técnico, preparador físico, etc.) y acceder a funcionalidades personalizadas que facilitan la organización, el entrenamiento y la comunicación dentro del equipo.
-
+**My Steam News** Te permite encontrar las ultimas noticias de los juegos disponibles en la tienda de Steam. Conectate a tu perfil y recibe las noticias de los juegos de tu biblioteca directamente al entrar a la aplicación. Explora los perfiles de tus amigos e enviales las noticas más interesantes y curiosas de sus juegos favoritos!!
 ---
 
 ## 🚀 Características principales
 
-- Pantalla de inicio personalizada según el rol del usuario
-- Registro de datos de rendimiento (velocidad, aceleración, sprint)
-- Entrenamientos interactivos con uso del acelerómetro
-- Gestión de tácticas: crear, editar, ver y eliminar
-- Pantalla de preferencias con configuraciones como:
-  - Unidades métricas o imperiales
-  - Día de inicio de la semana
-  - Permisos para DT
-  - Reinicio de estadísticas
-- Encuesta de satisfacción integrada y compartible
-- Persistencia de datos con `SharedPreferences` y `SQLite`
-
+- Busca cualquier elemento de la tienda de Steam para descubrir sus ultimas N noticias.
+- Vincula tu perfil a la aplicación y ve las noticias de los juegos de tu biblioteca o lista de deseados directamente en la pantalla Home o en su propia pantalla.
+- Ajusta tus preferencias para adaptar tu busqueda de noticias a tu comodidad.
+  - Usa modo claro o oscuro.
+  - Elige cuantas noticias recibir tanto al buscar manualmente como en tu pantalla home.
+  - Selecciona y guarda tus noticias favoritas para verlas en cualquier momento. 
+  - Añade juegos de los que te gustaría recibir noticias que no esten en tu perfil de Steam.
+- Comparte las noticias que te encuentres directamente desde la APP.
+- Busca los perfiles de tus amigos y descubre las noticas de sus juegos también.
+- 
 ---
 
-## 🛠️ Tecnologías utilizadas
+## 🛠️ API utilizadas
 
-- [Flutter](https://flutter.dev/) 3.x
-- `shared_preferences`
-- `sqflite`
-- `sensors_plus`
-- `share_plus`
+My Steam News trabaja directamente con las API´s oficiales de Steam.
 
----
+- ISteamNews : Para obtener las ultimas N noticas de un Item de la tienda de Steam (entiendase juegos/DLC/Banda sonora, etc).
+- ISteamUserStats : Para obterner las estadísticas de algún usuario en particular.
+- ISteamUser : Para obterner datos directamente de los perfiles de algún usuario.
 
-## 🧪 Encuesta de satisfacción
-
-Los usuarios pueden calificar la aplicación directamente desde la app y compartir sus respuestas fácilmente con el equipo de desarrollo.
-Accede a la pantalla 'Sobre' y responde la encuesta enviando tu respuesta al correo Diaz35scrodrigo@gmail.com para obtener tu retroalimentación.
+Para más información dirijase a la documentación oficial de las API´s de Steam disponibles en: https://steamcommunity.com/dev o directamente en: https://developer.valvesoftware.com/wiki/Steam_Web_API
 
 ---
 
@@ -55,5 +47,6 @@ que a su vez es impartida por la Universidad De Talca, en Talca, Maule, Chile. V
 
 **Rodrigo Díaz (ALIAS: IncGuy)**
 IG: @ItzIncGuy
-
+**Ignacio Alfaro**
+Fono: +56 9 4545 4918
 ---
