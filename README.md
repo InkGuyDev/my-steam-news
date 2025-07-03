@@ -32,12 +32,12 @@ Para más información dirijase a la documentación oficial de las API´s de Ste
 ## 🖼️ Evidencia de pruebas de la API
 
 Usando la API ISteamNews para mostrar las ultimas 3 noticas del juego Team Fortress 2 (ID 440)
-![ISteamNews](capturas/noticias.png)
+![ISteamNews](capturas/noticias.PNG)
 Usando la API IPlayerService para ver la biblioteca de juegos del usuario con ID 76561199137893115 (Rodrigo Díaz, vease: https://steamcommunity.com/id/ItzInkGuy)
-![IPlayerService](capturas/biblioteca.png)
+![IPlayerService](capturas/biblioteca.PNG)
 Usando la API ISteamUser para ver la lista de amigos del usuario con ID 76561199137893115 (Rodrigo Díaz, vease: https://steamcommunity.com/id/ItzInkGuy)
 Sirve para obtener las ID´s de los amigos del usuario sin tener que ir a buscar sus ID´s manualmente.
-![IPlayerService](capturas/amigos.png)
+![IPlayerService](capturas/amigos.PNG)
 
 ---
 
