@@ -1,4 +1,4 @@
-# My Steam News 
+![image](https://github.com/user-attachments/assets/859f5c80-b5ef-4cf1-9b22-4ff3ecb88c28)# My Steam News 
 
 **My Steam News** Te permite encontrar las ultimas noticias de los juegos disponibles en la tienda de Steam. Conectate a tu perfil y recibe las noticias de los juegos de tu biblioteca directamente al entrar a la aplicación. Explora los perfiles de tus amigos e enviales las noticas más interesantes y curiosas de sus juegos favoritos!!
 ---
@@ -26,6 +26,15 @@ My Steam News trabaja directamente con las API´s oficiales de Steam.
 - ISteamUser : Para obterner datos directamente de los perfiles de algún usuario.
 
 Para más información dirijase a la documentación oficial de las API´s de Steam disponibles en: https://steamcommunity.com/dev o directamente en: https://developer.valvesoftware.com/wiki/Steam_Web_API
+
+---
+
+## 🖼️ Evidencia de pruebas de la API
+
+Usando la API ISteamNews para mostrar las ultimas 3 noticas del juego Team Fortress 2 (ID 440)
+![ISteamNews](capturas/noticias.png)
+Usando la API para ver la biblioteca de juegos del usuario con ID 76561199137893115 (Rodrigo Díaz, vease: https://steamcommunity.com/id/ItzInkGuy)
+![Pantalla Desempeño](capturas/biblioteca.png)
 
 ---
 
