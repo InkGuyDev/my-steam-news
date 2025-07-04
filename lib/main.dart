@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_steam_news/pages/home.dart';
+import 'package:my_steam_news/pages/init.dart';
 
 
 void main() {
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
           titleMedium: TextStyle(color: Colors.white),
         ),
       ),
-      home: Homepage(title: 'Inicio',),
+      home: InitPage(title: 'Inicio')
     );
   }
 }
