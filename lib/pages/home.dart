@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_steam_news/data/services/service_news.dart';
 
 
 // Pagina Home de la aplicación, la que aparece al ingresar
@@ -11,9 +12,12 @@ class Homepage extends StatefulWidget {
 
 class _HomePageState extends State<Homepage> {
 
+  late ServiceNews serviceNew;
+
   @override
   void initState(){
     super.initState();
+    serviceNew.getNews('http://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?appid=440&count=3&maxlength=300&format=json');
   }
 
   @override
