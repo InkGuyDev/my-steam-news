@@ -67,7 +67,7 @@ que a su vez es impartida por la Universidad De Talca, en Talca, Maule, Chile. V
 ## ✨ Desarrollado por
 
 **Rodrigo Díaz (ALIAS: IncGuy)**
-IG: @ItzIncGuy
+IG: @ItzInkGuy
 **Ignacio Alfaro**
 Fono: +56 9 4545 4918
 ---
