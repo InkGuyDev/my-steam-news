@@ -41,6 +41,15 @@ Sirve para obtener las ID´s de los amigos del usuario sin tener que ir a buscar
 
 ---
 
+## 🖼️ Estructura y flujo de pantallas
+
+Mockup de la pantalla home
+![ISteamNews](capturas/mockup.jpeg)
+Flujo de pantallas 
+![IPlayerService](capturas/diagrama.jpeg)
+
+---
+
 ## 📦 Instalación del APK
 
 El APK se encuentra disponible en el respositorio dentro de la carpeta apk. Asegurate de habilitar los origenes desconocidos en tu dispositivo Android para 
