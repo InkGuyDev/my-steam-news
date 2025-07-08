@@ -12,12 +12,13 @@ class Homepage extends StatefulWidget {
 
 class _HomePageState extends State<Homepage> {
 
-  late ServiceNews serviceNew;
+  //final ServiceNews serviceNew = ServiceNews('http://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?appid=440&count=3&maxlength=300&format=json');
+  final ServiceNews serviceNew = ServiceNews('http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=DAF9764CEB1934D64B009F26CF5F8F63&steamid=');
 
   @override
   void initState(){
     super.initState();
-    serviceNew.getNews('http://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?appid=440&count=3&maxlength=300&format=json');
+    serviceNew.getNews('765611994840848'); //Se llama al ID del jugador
   }
 
   @override
