@@ -1,26 +1,32 @@
 class Noticia {
   final int? gid;
-  final String titulo;
+  final String title;
   final String url;
-  final String formacion;
+  final String image;
+  final String feedLabel;
+  final bool favorite;
 
   Noticia({
     this.gid,
-    required this.titulo,
+    required this.title,
     required this.url,
-    required this.formacion,
+    required this.image,
+    required this.feedLabel,
+    required this.favorite
   });
 
   Map<String, dynamic> toMap() {
-    return {'gid': gid, 'titulo': titulo, 'url': url, 'formacion': formacion};
+    return {'gid': gid, 'title': title, 'url': url, 'image': image, 'feedLabel' : feedLabel, 'favorite' : favorite};
   }
 
   static Noticia fromMap(Map<String, dynamic> map) {
     return Noticia(
       gid: map['gid'],
-      titulo: map['titulo'],
+      title: map['title'],
       url: map['url'],
-      formacion: map['formacion'],
+      image: map['image'],
+      feedLabel: map['feedLabel'],
+      favorite: map['favorite'],
     );
   }
 }

@@ -1,31 +1,24 @@
-class Tactica {
+class User {
   final int? id;
-  final String titulo;
-  final String descripcion;
-  final String formacion;
+  final String name;
 
-  Tactica({
+
+  User({
     this.id,
-    required this.titulo,
-    required this.descripcion,
-    required this.formacion,
+    required this.name,
   });
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'titulo': titulo,
-      'descripcion': descripcion,
-      'formacion': formacion,
+      'name': name,
     };
   }
 
-  static Tactica fromMap(Map<String, dynamic> map) {
-    return Tactica(
+  static User fromMap(Map<String, dynamic> map) {
+    return User(
       id: map['id'],
-      titulo: map['titulo'],
-      descripcion: map['descripcion'],
-      formacion: map['formacion'],
+      name: map['name'],
     );
   }
 }
