@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:async';
 import 'package:http/http.dart' as http;
+import 'package:my_steam_news/domain/entities/noticia.dart';
 import 'package:my_steam_news/domain/entities/usuario.dart';
 
 //Link para detalles del juego: https://store.steampowered.com/api/appdetails?appids=2651280
@@ -9,26 +10,23 @@ import 'package:my_steam_news/domain/entities/usuario.dart';
 //Key = DAF9764CEB1934D64B009F26CF5F8F63
 
 class ServiceNews {
-  String urlRequest;
+  //String urlRequest;
 
-  ServiceNews(this.urlRequest);
+  //ServiceNews(this.urlRequest);
 
-  Future<String> getNews(String searchQuery) async {
-    //final String finalUrlRequest = urlRequest + '=$searchQuery';//await http.get(Uri.parse(urlRequest),);
+  //Para obtener las noticias de los juegos
+  Future<List<Noticia>> getNews(String searchQuery, String quantityOfNews) async {
 
-    //final url = Uri.parse('$urlRequest$searchQuery&format=json');
-    //final url1 = Uri.parse('http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=DAF9764CEB1934D64B009F26CF5F8F63&steamid=76561199484084882&format=json');
-    final url = Uri.parse('http://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?appid=440&count=1&maxlength=300&format=json');
+    final url = Uri.parse('http://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?appid=$searchQuery&count=$quantityOfNews&maxlength=300&format=json');
 
     final response = await http.get(url);
 
-    print('Response status: ${response.statusCode}');
-
     if(response.statusCode == 200){
 
-      print('Response status: ${response.statusCode}');
-      print('Response body: ${response.body}');
-      return response.body;
+      final data = jsonDecode(response.body);
+      final List<dynamic> newsJson = data['appnews']['newsitems'];
+
+      return newsJson.map((json) => Noticia.fromJson(json)).toList();
     }
     else
     {
@@ -36,8 +34,9 @@ class ServiceNews {
     }
   }
 
-  //Para obtener la ID de los juegos
+  //Para obtener la ID de los juegos del usuario
   Future<User> getUserGamesIds(String idUser) async {
+
     final url = Uri.parse('http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=DAF9764CEB1934D64B009F26CF5F8F63&steamid=$idUser&format=json');
   
     final response = await http.get(url);
@@ -50,4 +49,7 @@ class ServiceNews {
       throw Exception('failed to load user games');
     }
   }
+
+
+  //Para obtener las imagenes de los juegos (detalles)
 }

@@ -7,7 +7,6 @@ class User {
   //final List<int> idsWishList;
   //final List<int> idsFollowList;
 
-
   User({
     this.id,
     this.name,
@@ -15,19 +14,6 @@ class User {
     required this.gameCount,
   });
 
-  /*Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'name': name,
-    };
-  }
-
-  static User fromMap(Map<String, dynamic> map) {
-    return User(
-      id: map['id'],
-      name: map['name'],
-    );
-  }*/
 
   factory User.fromJson(Map<String, dynamic> json) {
     final response = json['response'];

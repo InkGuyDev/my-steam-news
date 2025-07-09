@@ -1,32 +1,30 @@
 class Noticia {
-  final int? gid;
+  final String gid;
   final String title;
   final String url;
-  final String image;
+  final String date;
+  final String? image;
   final String feedLabel;
-  final bool favorite;
+  final bool? favorite;
 
   Noticia({
-    this.gid,
+    required this.gid,
     required this.title,
     required this.url,
-    required this.image,
+    required this.date,
+    this.image,
     required this.feedLabel,
-    required this.favorite
+    this.favorite
   });
 
-  Map<String, dynamic> toMap() {
-    return {'gid': gid, 'title': title, 'url': url, 'image': image, 'feedLabel' : feedLabel, 'favorite' : favorite};
-  }
 
-  static Noticia fromMap(Map<String, dynamic> map) {
+  factory Noticia.fromJson(Map<String, dynamic> json){
     return Noticia(
-      gid: map['gid'],
-      title: map['title'],
-      url: map['url'],
-      image: map['image'],
-      feedLabel: map['feedLabel'],
-      favorite: map['favorite'],
+      gid: json['gid'] ?? '',
+      title: json['title'] ?? '', 
+      url: json['url'] ?? '', 
+      date: DateTime.fromMillisecondsSinceEpoch((json['date'] ?? 0) * 1000).toString(), 
+      feedLabel: json['feedLabel'] ?? '', 
     );
   }
 }
