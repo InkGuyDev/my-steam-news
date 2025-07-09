@@ -30,8 +30,8 @@ class _OtherPageState extends State<OtherPage>{
             ),
           ),
           body: TabBarView(children: [
-            WishListPageShow(),
-            FollowedPageShow(),
+            wishListPageShow(),
+            followedPageShow(),
           ])
         )
       ),
@@ -42,14 +42,14 @@ class _OtherPageState extends State<OtherPage>{
 
 // Funciones que muestran el contenido en pantalla
 // Para mostrar las noticias de los juegos principales del usuario
-Widget WishListPageShow(){
+Widget wishListPageShow(){
   print('Estamos en la pagina de la lista de deseados del usuario');
   return Center(
     child: Text('Page in devolpment . . . papu', style: TextStyle(color: Colors.white)),
   );
 }
 // Para mostrar las noticias más recientes de varios juegos (populares o no)
-Widget FollowedPageShow(){
+Widget followedPageShow(){
   print('Estamos en la pagina de los juegos seguidos del usuario');
   return Center(
     child: Text('Page in devolpment . . . papu', style: TextStyle(color: Colors.white),),
