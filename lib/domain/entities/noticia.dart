@@ -14,17 +14,19 @@ class Noticia {
     required this.date,
     this.image,
     required this.feedLabel,
-    this.favorite
+    this.favorite,
   });
 
-
-  factory Noticia.fromJson(Map<String, dynamic> json){
+  factory Noticia.fromJson(Map<String, dynamic> json) {
     return Noticia(
       gid: json['gid'] ?? '',
-      title: json['title'] ?? '', 
-      url: json['url'] ?? '', 
-      date: DateTime.fromMillisecondsSinceEpoch((json['date'] ?? 0) * 1000).toString(), 
-      feedLabel: json['feedLabel'] ?? '', 
+      title: json['title'] ?? '',
+      url: json['url'] ?? '',
+      date:
+          DateTime.fromMillisecondsSinceEpoch(
+            (json['date'] ?? 0) * 1000,
+          ).toString(),
+      feedLabel: json['feedlabel'] ?? '',
     );
   }
 }
