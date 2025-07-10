@@ -30,7 +30,6 @@ class _InitPageState extends State<InitPage> {
     return Scaffold(
       appBar: PreferredSize(preferredSize: Size.fromHeight(65), // AppBar principal, este nunca cambia y se mantiene en toda la aplicación
         child: AppBar( 
-          backgroundColor: const Color.fromARGB(255, 11, 40, 64),
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [ //Diferentes botones superiores y el logo de la app: Usuario, Logo, Preferencias
