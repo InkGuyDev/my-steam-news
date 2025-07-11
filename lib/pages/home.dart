@@ -7,7 +7,6 @@ import 'package:my_steam_news/domain/entities/usuario.dart';
 class Homepage extends StatefulWidget {
   const Homepage({super.key, required this.newsFormat, required this.listGameNewsHome});
   
-  //final Card newsFormat;
   final Widget Function(Noticia) newsFormat;
   final List<Noticia> listGameNewsHome;
 
@@ -49,7 +48,6 @@ class _HomePageState extends State<Homepage> {
   }
 }
 
-// Funciones que muestran el contenido en pantalla
 // Para mostrar las noticias de los juegos principales del usuario
 Widget yourGamesPageShow(List<Noticia> listGameHome, Widget Function(Noticia) cardFormat) {
   print('Cantidad de noticias en listGameHome: ${listGameHome.length}');

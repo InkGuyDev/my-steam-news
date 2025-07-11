@@ -19,8 +19,8 @@ class _OtherPageState extends State<OtherPage>{
             child: AppBar(
               bottom: const TabBar(
                 tabs: [
-                  Tab(text: 'Lista de desados'),
-                  Tab(text: 'Seguidos'),
+                  Tab(text: 'Jugados recientemente'), //Lista de desados [Cambiado por no tener acceso]
+                  Tab(text: 'Juegos con más logros'),              //Seguidos [Cambiado por no tener acceso]
                 ],
                 indicatorSize: TabBarIndicatorSize.label,
                 indicatorColor: Color.fromARGB(255, 250, 253, 255),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
+import 'package:my_steam_news/domain/entities/juego.dart';
 import 'package:my_steam_news/pages/favorite.dart';
 import 'package:my_steam_news/pages/home.dart';
 import 'package:my_steam_news/pages/others.dart';
@@ -11,20 +13,17 @@ import 'package:my_steam_news/data/services/service_news.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 
-
-//Link para detalles del juego: https://store.steampowered.com/api/appdetails?appids=2651280
-//Link para juegos del usuario: http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=DAF9764CEB1934D64B009F26CF5F8F63&steamid=*iduser*&format=json
-//Link para las noticias de juegos: http://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?appid=440&count=3&maxlength=300&format=json
-
 //Frano ID = 76561198071742485
 //Nachoar ID = 76561199176277858
 
 Color colorCards = Colors.blue;
-TextStyle cardTitleTextStyle = TextStyle(fontSize: 30);
+TextStyle cardTitleTextStyle = TextStyle(fontSize: 20);
 int quantityOfNewsPerGame = 3;
 
 //Lista de noticias totales de los juegos del usuario
 List<Noticia> listGameHome = [];
+//Lista de juegos aprox de la aplicación
+List<Juego> listGamesApp = [];
 
 
 // Pagina Home de la aplicación, la que aparece al ingresar
@@ -50,7 +49,7 @@ class _InitPageState extends State<InitPage> {
   void initState(){
     super.initState();
 
-    //Conseguir IDs del usuario
+    //Conseguir IDs de juegos del usuario
     serviceNew
       .getUserGamesIds(userprof.id.toString())
       .then((user) {
@@ -62,37 +61,66 @@ class _InitPageState extends State<InitPage> {
 
         if (userprof.idsGames.isNotEmpty) {
           for (var idGame in userprof.idsGames) {
+            serviceNew.getNews(idGame.toString(), quantityOfNewsPerGame.toString()).then((news) async {
+              final gameDetail = await serviceNew.getGameDetails(idGame.toString());
+
+              // Asigna imágenes a las noticias
+              for (var newPerGame in news) {
+                newPerGame.images = gameDetail.images;
+              }
+
+              setState(() {
+                listGameHome.addAll(news);
+              });
+
+              print('Se agregaron ${news.length} noticias con imágenes para ${gameDetail.titulo}');
+            }).catchError((e) {
+              print('Error al obtener datos para $idGame: $e');
+            });
+          }
+          /*for (var idGame in userprof.idsGames) {
             serviceNew
                 .getNews(idGame.toString(), quantityOfNewsPerGame.toString())
                 .then((news) {
                   setState(() {
                     listGamesUserNewsPerGame = news;
+                    Juego gameaux;
+                    serviceNew.getGameDetails(idGame.toString()).then((gameDetail) {
+                      setState(() {
+                        gameaux = gameDetail;
+                        for (var newPerGame in listGamesUserNewsPerGame){
+                          setState(() {
+                            newPerGame.images = gameaux.images;
+                          });
+                        }
+                        print('Se asignaron imágenes para juego ${gameaux.titulo}');
+                        print(gameaux.images);
+                      });
+                    });
                     print('${listGamesUserNewsPerGame.length}');
-                    for (var gameNews in listGamesUserNewsPerGame) {
-                      listGameHome.add(gameNews);
-                    }
+                    setState(() {
+                      listGameHome.addAll(listGamesUserNewsPerGame);
+                    });
+                    /*for (var gameNews in listGamesUserNewsPerGame) {
+                      setState(() {
+                        listGameHome.add(gameNews);
+                      });
+                    }*/
                   });
                 });
-          }
+          }*/
         }
       })
       .catchError((e) => print('failed to work with API data $e'));
-    /*listGameHome = [
-      Noticia(
-        gid: '70',
-        title: 'Half-Life 3 confirmado',
-        date: '2025-07-10',
-        feedLabel: 'Valve News',
-        url: 'https://store.steampowered.com/app/70',
-      ),
-      Noticia(
-        gid: '400',
-        title: 'Portal 3 en desarrollo',
-        date: '2025-07-09',
-        feedLabel: 'GabeN Oficial',
-        url: 'https://store.steampowered.com/app/400',
-      ),
-    ];*/
+    
+    //Conseguir juegos (nombres e ids) de la app
+    serviceNew.getGameAppList().then((games) {
+      setState(() {
+        listGamesApp = games;
+      });
+    }).catchError((e) => print('failed to load game app list'));
+    
+    
     print('Se cargaron los datos de las API');
   }
 
@@ -145,7 +173,7 @@ class _InitPageState extends State<InitPage> {
       // Body para agregar los Widget del BottomNavigationBar
       body: <Widget> [
         Homepage(listGameNewsHome: listGameHome, newsFormat: cardFormat,),
-        SearchPage(),
+        SearchPage(gamesToSearch: listGamesApp, newsFormat: cardFormat, serviceNew: serviceNew,),
         FavoritePage(),
         OtherPage()
       ][currentPageIndex],
@@ -168,7 +196,6 @@ void changeToPreferencesPage(BuildContext context){
 //Formato de Card para mostrar las noticias
 //Formato de la Card que muestra la noticia
 Widget cardFormat(Noticia noticia) {
-  print('Se deberian ver algunas noticias, las ves tú?');
   return Card(
     elevation: 4,
     color: colorCards,
@@ -188,6 +215,8 @@ Widget cardFormat(Noticia noticia) {
             ),
             const SizedBox(height: 6),
             Text(noticia.title, style: cardTitleTextStyle),
+            const SizedBox(height: 6),
+            Center(child: imageGameCard(noticia),),
             const SizedBox(height: 10),
             Row(
               children: [
@@ -211,10 +240,22 @@ Widget cardFormat(Noticia noticia) {
   );
 }
 
-Future<void> _launchUrl(String _url) async {
-  final Uri _url1 = Uri.parse(_url);
+Future<void> _launchUrl(String url) async {
+  final Uri url1 = Uri.parse(url);
 
-  if (!await launchUrl(_url1)) {
-    throw Exception('Could not launch $_url');
+  if (!await launchUrl(url1)) {
+    throw Exception('Could not launch $url');
+  }
+}
+
+//funcion para inicializar la imagen
+Widget imageGameCard(Noticia noticia){
+  final List<String> imagenes = noticia.images ?? [];
+  if (imagenes.isNotEmpty) {
+    final randomImage = imagenes[Random().nextInt(imagenes.length)];
+    print('Esta es la imagen del juego $randomImage');
+    return Image.network(randomImage);
+  } else {
+    return const Icon(Icons.image_not_supported, size: 100, color: Colors.grey);
   }
 }

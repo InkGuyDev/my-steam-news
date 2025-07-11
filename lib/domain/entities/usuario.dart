@@ -14,7 +14,6 @@ class User {
     required this.gameCount,
   });
 
-
   factory User.fromJson(Map<String, dynamic> json) {
     final response = json['response'];
     final gamesList = json['response']['games'] as List<dynamic>? ?? [];
