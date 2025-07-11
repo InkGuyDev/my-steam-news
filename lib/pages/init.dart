@@ -24,6 +24,8 @@ int quantityOfNewsPerGame = 3;
 List<Noticia> listGameHome = [];
 //Lista de juegos aprox de la aplicación
 List<Juego> listGamesApp = [];
+//Lista de juegos recientemente jugados del usuario
+List<Juego> listGamesRecentlyPlay = [];
 
 
 // Pagina Home de la aplicación, la que aparece al ingresar
@@ -78,37 +80,6 @@ class _InitPageState extends State<InitPage> {
               print('Error al obtener datos para $idGame: $e');
             });
           }
-          /*for (var idGame in userprof.idsGames) {
-            serviceNew
-                .getNews(idGame.toString(), quantityOfNewsPerGame.toString())
-                .then((news) {
-                  setState(() {
-                    listGamesUserNewsPerGame = news;
-                    Juego gameaux;
-                    serviceNew.getGameDetails(idGame.toString()).then((gameDetail) {
-                      setState(() {
-                        gameaux = gameDetail;
-                        for (var newPerGame in listGamesUserNewsPerGame){
-                          setState(() {
-                            newPerGame.images = gameaux.images;
-                          });
-                        }
-                        print('Se asignaron imágenes para juego ${gameaux.titulo}');
-                        print(gameaux.images);
-                      });
-                    });
-                    print('${listGamesUserNewsPerGame.length}');
-                    setState(() {
-                      listGameHome.addAll(listGamesUserNewsPerGame);
-                    });
-                    /*for (var gameNews in listGamesUserNewsPerGame) {
-                      setState(() {
-                        listGameHome.add(gameNews);
-                      });
-                    }*/
-                  });
-                });
-          }*/
         }
       })
       .catchError((e) => print('failed to work with API data $e'));
@@ -119,6 +90,13 @@ class _InitPageState extends State<InitPage> {
         listGamesApp = games;
       });
     }).catchError((e) => print('failed to load game app list'));
+
+    //Juegos recientemente jugados
+    serviceNew.getRecentlyPlayedGames(userprof.id.toString()).then((games) {
+      setState(() {
+        listGamesRecentlyPlay = games;
+      });
+    }).catchError((e) => print('failed to load recently game played'));
     
     
     print('Se cargaron los datos de las API');
@@ -175,7 +153,7 @@ class _InitPageState extends State<InitPage> {
         Homepage(listGameNewsHome: listGameHome, newsFormat: cardFormat,),
         SearchPage(gamesToSearch: listGamesApp, newsFormat: cardFormat, serviceNew: serviceNew,),
         FavoritePage(),
-        OtherPage()
+        OtherPage(newsFormat: cardFormat, gamesPlayed: listGamesRecentlyPlay,)
       ][currentPageIndex],
     );
   }

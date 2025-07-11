@@ -66,6 +66,7 @@ class ServiceNews {
     }
   }
 
+  //Para obtener los juegos de la app (nombre e ID)
   Future<List<Juego>> getGameAppList() async {
     final url = Uri.parse('https://api.steampowered.com/ISteamApps/GetAppList/v2/');
 
@@ -77,6 +78,24 @@ class ServiceNews {
       final List<dynamic> gameAppList = data['applist']['apps'];
 
       return gameAppList.map((json) => Juego.fromJsonList(json)).toList();
+    }
+    else{
+      throw Exception('failed to load game list');
+    }
+  }
+
+  //Para la lista de juegos recientemente jugados 
+  Future<List<Juego>> getRecentlyPlayedGames(String idUser) async {
+    final url = Uri.parse('http://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/?key=DAF9764CEB1934D64B009F26CF5F8F63&steamid=$idUser&format=json');
+
+    final response = await http.get(url);
+
+    if(response.statusCode == 200){
+
+      final data = jsonDecode(response.body);
+      final List<dynamic> gameRecentlyList = data['response']['games'];
+
+      return gameRecentlyList.map((json) => Juego.fromJsonList(json)).toList();
     }
     else{
       throw Exception('failed to load game list');
