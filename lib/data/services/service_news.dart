@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'package:my_steam_news/domain/entities/juego.dart';
 import 'package:my_steam_news/domain/entities/noticia.dart';
-import 'package:my_steam_news/domain/entities/juego.dart';
 import 'package:my_steam_news/domain/entities/usuario.dart';
 
 //Link para lista de juegos de la plataforma: https://api.steampowered.com/ISteamApps/GetAppList/v2/
@@ -15,7 +14,6 @@ import 'package:my_steam_news/domain/entities/usuario.dart';
 //Key = DAF9764CEB1934D64B009F26CF5F8F63
 
 class ServiceNews {
-  
   //Para obtener las noticias de los juegos
   Future<List<Noticia>> getNews(
     String searchQuery,
