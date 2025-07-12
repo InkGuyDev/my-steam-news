@@ -21,8 +21,10 @@ Color colorCards = Colors.blue;
 TextStyle cardTitleTextStyle = TextStyle(fontSize: 20);
 int quantityOfNewsPerGame = 3;
 
+//Lista de noticias de las novedades
+List<Noticia> listGameNewsHome = [];
 //Lista de noticias totales de los juegos del usuario
-List<Noticia> listGameHome = [];
+List<Noticia> listGameUserHome = [];
 //Lista de juegos aprox de la aplicación
 List<Juego> listGamesApp = [];
 //Lista de juegos recientemente jugados del usuario
@@ -55,7 +57,7 @@ class _InitPageState extends State<InitPage> {
 
   void loadUserGames(){
     final userId = context.watch<Appdata>().usageId.toString();
-    listGameHome.clear();
+    listGameUserHome.clear();
     _userLoaded = false;
 
     //Conseguir IDs de juegos del usuario
@@ -79,7 +81,7 @@ class _InitPageState extends State<InitPage> {
               }
 
               setState(() {
-                listGameHome.addAll(news);
+                listGameUserHome.addAll(news);
               });
 
               print('Se agregaron ${news.length} noticias con imágenes para ${gameDetail.titulo}');
@@ -91,11 +93,20 @@ class _InitPageState extends State<InitPage> {
       })
       .catchError((e) => print('failed to work with API data $e'));
     
-    //Conseguir juegos (nombres e ids) de la app
+    // Conseguir juegos (nombres e ids) de la app
     serviceNew.getGameAppList().then((games) {
       setState(() {
         listGamesApp = games;
       });
+
+      // Conseguir noticias de los primeros 30 juegos de la app
+      for (int i = games.length - 1; i >= games.length - 10; i--) {
+        serviceNew.getNews(games[i].id.toString(), '1').then((gamesNew) {
+          setState(() {
+            listGameNewsHome.addAll(gamesNew);
+          });
+        }).catchError((e) => print('failed to load game news'));
+      }
     }).catchError((e) => print('failed to load game app list'));
 
     //Juegos recientemente jugados
@@ -104,7 +115,6 @@ class _InitPageState extends State<InitPage> {
         listGamesRecentlyPlay = games;
       });
     }).catchError((e) => print('failed to load recently game played'));
-    
     
     print('Se cargaron los datos de las API');
   }
@@ -118,10 +128,12 @@ class _InitPageState extends State<InitPage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [ //Diferentes botones superiores y el logo de la app: Usuario, Logo, Preferencias
               IconButton( icon: const Icon(Icons.person, color: Colors.white, size: 35,),
-                onPressed: () { changeToUserPage(context); }, ),
-              Text('Insertar logo Aqui', style: TextStyle(color: Colors.white, fontSize: 18)),
+                onPressed: () { changeToUserPage(context); }, 
+              ),
+              Image.asset('assets/icon/Logo_icon_MySteamNews.png', width: 50, height: 50),
               IconButton( icon: const Icon(Icons.settings, color: Colors.white, size: 35,),
-                onPressed: () { changeToPreferencesPage(context); }, ),
+                onPressed: () { changeToPreferencesPage(context); }, 
+              ),
             ],
           ),
         ),
@@ -157,7 +169,7 @@ class _InitPageState extends State<InitPage> {
       ),
       // Body para agregar los Widget del BottomNavigationBar
       body: <Widget> [
-        Homepage(listGameNewsHome: listGameHome, newsFormat: cardFormat,),
+        Homepage(listGameNewsHome: listGameNewsHome, listGameUserHome: listGameUserHome, newsFormat: cardFormat,),
         SearchPage(gamesToSearch: listGamesApp, newsFormat: cardFormat, serviceNew: serviceNew,),
         FavoritePage(),
         OtherPage(newsFormat: cardFormat, gamesPlayed: listGamesRecentlyPlay,)

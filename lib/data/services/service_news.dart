@@ -17,10 +17,7 @@ import 'package:my_steam_news/domain/entities/usuario.dart';
 class ServiceNews {
   
   //Para obtener las noticias de los juegos
-  Future<List<Noticia>> getNews(
-    String searchQuery,
-    String quantityOfNews,
-  ) async {
+  Future<List<Noticia>> getNews( String searchQuery, String quantityOfNews,) async {
     final url = Uri.parse(
       'http://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?appid=$searchQuery&count=$quantityOfNews&maxlength=300&format=json',
     );
