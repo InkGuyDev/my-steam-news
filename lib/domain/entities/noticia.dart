@@ -3,7 +3,7 @@ class Noticia {
   final String title;
   final String url;
   final String date;
-  final String? image;
+  List<String>? images;
   final String feedLabel;
   final bool? favorite;
 
@@ -12,7 +12,7 @@ class Noticia {
     required this.title,
     required this.url,
     required this.date,
-    this.image,
+    this.images,
     required this.feedLabel,
     this.favorite,
   });
