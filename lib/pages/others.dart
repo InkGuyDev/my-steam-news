@@ -196,4 +196,3 @@ class _GamesPlayedState extends State<GamesPlayed> {
     );
   }
 }
-

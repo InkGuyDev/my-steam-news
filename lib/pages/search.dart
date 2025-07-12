@@ -45,6 +45,7 @@ class GameSearch extends SearchDelegate<String> {
     );
   }
 
+
   @override
   String get searchFieldLabel => 'Buscar juego...';
 
@@ -74,7 +75,6 @@ class GameSearch extends SearchDelegate<String> {
     );
   }
 
-
   //Resultados de la busqueda
   @override
   Widget buildResults(BuildContext context){
@@ -85,6 +85,9 @@ class GameSearch extends SearchDelegate<String> {
       itemBuilder: (_, index) => ListTile(
         title: Text(results[index].titulo, style: TextStyle(color: Colors.white),),
         onTap: () {
+          close(context, results[index].titulo);
+
+          Navigator.push(context, MaterialPageRoute(builder: (context) => NewsGame(cardFormat: newsFormat, game: results[index])));
           close(context, results[index].titulo);
 
           Navigator.push(context, MaterialPageRoute(builder: (context) => NewsGame(cardFormat: newsFormat, game: results[index])));

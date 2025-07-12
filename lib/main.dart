@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:my_steam_news/data/services/app_data.dart';
+import 'package:provider/provider.dart';
 import 'package:my_steam_news/pages/init.dart';
 import 'package:flutter/services.dart';
 
-
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(create: (_) => Appdata(), child: const MyApp()),
+  );
 }
-
 
 // MyApp para controlar datos visuales de la aplicación
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
 
   @override
   Widget build(BuildContext context) {
@@ -23,21 +24,21 @@ class MyApp extends StatelessWidget {
       theme: theme.copyWith(
         appBarTheme: AppBarTheme(
           systemOverlayStyle:
-            colorScheme.brightness == Brightness.dark
-                ? SystemUiOverlayStyle.light
-                : SystemUiOverlayStyle.dark,
-          backgroundColor: colorScheme.brightness == Brightness.dark ? Colors.white : const Color.fromARGB(255, 11, 40, 64),
-          iconTheme: theme.primaryIconTheme.copyWith(color: Colors.white ),
+              colorScheme.brightness == Brightness.dark
+                  ? SystemUiOverlayStyle.light
+                  : SystemUiOverlayStyle.dark,
+          backgroundColor:
+              colorScheme.brightness == Brightness.dark
+                  ? Colors.white
+                  : const Color.fromARGB(255, 11, 40, 64),
+          iconTheme: theme.primaryIconTheme.copyWith(color: Colors.white),
         ),
-        inputDecorationTheme:
-          InputDecorationTheme(
-            hintStyle: theme.inputDecorationTheme.hintStyle,
-            border: InputBorder.none,
-          ),
+        inputDecorationTheme: InputDecorationTheme(
+          hintStyle: theme.inputDecorationTheme.hintStyle,
+          border: InputBorder.none,
+        ),
         scaffoldBackgroundColor: const Color.fromARGB(255, 51, 63, 84),
-        textTheme: TextTheme(
-          titleMedium: TextStyle(color: Colors.white),
-        ),
+        textTheme: TextTheme(titleMedium: TextStyle(color: Colors.white)),
       ),
       /*ThemeData(
         scaffoldBackgroundColor: const Color.fromARGB(255, 51, 63, 84),
@@ -46,7 +47,7 @@ class MyApp extends StatelessWidget {
           titleMedium: TextStyle(color: Colors.white),
         ),
       ),*/
-      home: InitPage(title: 'Inicio')
+      home: InitPage(title: 'Inicio'),
     );
   }
 }

@@ -10,8 +10,9 @@ import 'package:my_steam_news/pages/userprofile.dart';
 import 'package:my_steam_news/domain/entities/noticia.dart';
 import 'package:my_steam_news/domain/entities/usuario.dart';
 import 'package:my_steam_news/data/services/service_news.dart';
+import 'package:my_steam_news/data/services/app_data.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 
 //Frano ID = 76561198071742485
 //Nachoar ID = 76561199176277858
@@ -27,7 +28,6 @@ List<Juego> listGamesApp = [];
 //Lista de juegos recientemente jugados del usuario
 List<Juego> listGamesRecentlyPlay = [];
 
-
 // Pagina Home de la aplicación, la que aparece al ingresar
 class InitPage extends StatefulWidget {
   const InitPage({super.key, required this.title});
@@ -42,6 +42,7 @@ class _InitPageState extends State<InitPage> {
 
   ServiceNews serviceNew = ServiceNews();
 
+  bool _userLoaded = false;
   //User? userprof;
   User userprof = User(id: 76561199176277858, idsGames: [], gameCount: 0);
   //Lista de noticias por juego
@@ -50,10 +51,16 @@ class _InitPageState extends State<InitPage> {
   @override
   void initState(){
     super.initState();
+  }
+
+  void loadUserGames(){
+    final userId = context.watch<Appdata>().usageId.toString();
+    listGameHome.clear();
+    _userLoaded = false;
 
     //Conseguir IDs de juegos del usuario
     serviceNew
-      .getUserGamesIds(userprof.id.toString())
+      .getUserGamesIds(userId)
       .then((user) {
         setState(() {
           userprof = user;
@@ -156,6 +163,14 @@ class _InitPageState extends State<InitPage> {
         OtherPage(newsFormat: cardFormat, gamesPlayed: listGamesRecentlyPlay,)
       ][currentPageIndex],
     );
+  }
+
+  @override
+  void didChangeDependencies(){
+    super.didChangeDependencies();
+    if (_userLoaded) return;
+    _userLoaded = true;
+    loadUserGames();
   }
 }
 

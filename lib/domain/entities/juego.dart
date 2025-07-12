@@ -18,16 +18,14 @@ class Juego {
     return Juego(
       id: data['steam_appid'],
       titulo: data['name'],
-      images: screenshots != null
-        ? screenshots.map((e) => e['path_full'] as String).toList()
-        : [],
+      images:
+          screenshots != null
+              ? screenshots.map((e) => e['path_full'] as String).toList()
+              : [],
     );
   }
 
   factory Juego.fromJsonList(Map<String, dynamic> json) {
-    return Juego(
-      id: json['appid'],
-      titulo: json['name'] ?? '',
-    );
+    return Juego(id: json['appid'], titulo: json['name'] ?? '');
   }
 }

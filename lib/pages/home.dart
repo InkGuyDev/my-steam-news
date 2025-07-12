@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:my_steam_news/domain/entities/noticia.dart';
 import 'package:my_steam_news/domain/entities/usuario.dart';
 
-
 // Pagina Home de la aplicación, la que aparece al ingresar
 class Homepage extends StatefulWidget {
   const Homepage({super.key, required this.newsFormat, required this.listGameNewsHome});
