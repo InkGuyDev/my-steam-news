@@ -26,7 +26,7 @@ class _OtherPageState extends State<OtherPage>{
               bottom: const TabBar(
                 tabs: [
                   Tab(text: 'Jugados recientemente'), //Lista de desados [Cambiado por no tener acceso]
-                  Tab(text: 'Juegos con más logros'), //Seguidos [Cambiado por no tener acceso]
+                  Tab(text: 'Explorar'), //Seguidos [Cambiado por no tener acceso]
                 ],
                 indicatorSize: TabBarIndicatorSize.label,
                 indicatorColor: Color.fromARGB(255, 250, 253, 255),
@@ -37,7 +37,7 @@ class _OtherPageState extends State<OtherPage>{
           ),
           body: TabBarView(children: [
             recentlyPlayedPageShow(widget.newsFormat, widget.gamesPlayed),
-            achievementsGamesPageShow(),
+            explorePageShow(),
           ])
         )
       ),
@@ -112,20 +112,144 @@ Widget recentlyPlayedPageShow(Widget Function(Noticia) newsFormat, List<Juego> g
     ),
   );
 }
-// Para mostrar las noticias más recientes de varios juegos (populares o no)
-Widget achievementsGamesPageShow(){
+
+
+//Para mostrar las noticias más recientes de varios juegos (populares o no)
+Widget explorePageShow(){
   print('Estamos en la pagina de los Juegos con más logros del usuario');
-  return Center(
-    child: Text('Page in devolpment . . . papu', style: TextStyle(color: Colors.white),),
+  return Scaffold(
+    appBar: PreferredSize(
+      preferredSize: Size.fromHeight(100),
+      child: AppBar(
+        centerTitle: true,
+        backgroundColor: const Color.fromARGB(148, 14, 56, 90),
+        //shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12),),
+        flexibleSpace: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 5), // Ajusta si quieres mover más abajo
+            child: Stack(
+              children: [
+                Text(
+                  'Explora nuevas noticias de \njuegos a partir de tus gustos',
+                  style: TextStyle(
+                    fontSize: 24,
+                    foreground: Paint()
+                      ..style = PaintingStyle.stroke
+                      ..strokeWidth = 3.5
+                      ..color = const Color.fromARGB(160, 22, 28, 36),
+                  ),
+                ),
+                Text(
+                  'Explora nuevas noticias de \njuegos a partir de tus gustos',
+                  style: TextStyle(
+                    fontSize: 24,
+                    color: const Color.fromARGB(255, 255, 255, 255)
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    ),
+    body: ListView(
+      children: [
+        ExpansionTile(
+          tilePadding: EdgeInsets.all(15),
+          collapsedBackgroundColor: const Color.fromARGB(6, 255, 255, 255),
+          collapsedTextColor: Colors.white,
+          collapsedIconColor: Colors.white,
+          backgroundColor: const Color.fromARGB(70, 255, 255, 255),
+          textColor: Colors.white,
+          iconColor: Colors.white,
+          title: Text("Género", style: TextStyle(fontSize: 20),),
+          subtitle: Text('Aventura, Acción, Simulación, etc.'),
+          leading: Icon(Icons.menu, size: 35,),
+          children: optionsGender(),
+        ),
+        ExpansionTile(
+          tilePadding: EdgeInsets.all(15),
+          collapsedBackgroundColor: const Color.fromARGB(6, 255, 255, 255),
+          collapsedTextColor: Colors.white,
+          collapsedIconColor: Colors.white,
+          backgroundColor: const Color.fromARGB(70, 255, 255, 255),
+          textColor: Colors.white,
+          iconColor: Colors.white,
+          title: Text("Categorías", style: TextStyle(fontSize: 20),),
+          subtitle: Text('Single-player, Full controller support etc.'),
+          leading: Icon(Icons.menu, size: 35,),
+          children: optionsGender(),
+        ),
+        Container(
+          height: 80,
+          decoration: BoxDecoration(
+            color: const Color.fromARGB(6, 255, 255, 255),
+          ),
+          child: Center(
+            child: ListTile(
+              leading: Icon(Icons.menu, color: Colors.white, size: 35,), // mismo ícono que arriba
+              title: Text(
+                "Proximos lanzamientos",
+                style: TextStyle(fontSize: 20, color: Colors.white,),
+              ),
+              onTap: () {},
+            ),
+          )
+        ),
+        Container(
+          height: 80,
+          decoration: BoxDecoration(
+            color: const Color.fromARGB(6, 255, 255, 255),
+          ),
+          child: Center(
+            child: ListTile(
+              leading: Icon(Icons.menu, color: Colors.white, size: 35,), // mismo ícono que arriba
+              title: Text(
+                "Gratuitos",
+                style: TextStyle(fontSize: 20, color: Colors.white,),
+              ),
+              onTap: () {},
+            ),
+          )
+        ),
+      ],
+    ),
   );
 }
 
+List<ElevatedButton> optionsGender(){
+  return [
+    ElevatedButton(onPressed: () {}, style: ElevatedButton.styleFrom(minimumSize: Size(300, 42), backgroundColor: const Color.fromARGB(148, 14, 56, 90)), child: Text("Action", style: TextStyle(color: Colors.white))),
+    ElevatedButton(onPressed: () {}, style: ElevatedButton.styleFrom(minimumSize: Size(300, 42), backgroundColor: const Color.fromARGB(148, 14, 56, 90)), child: Text("Adventure", style: TextStyle(color: Colors.white))),
+    ElevatedButton(onPressed: () {}, style: ElevatedButton.styleFrom(minimumSize: Size(300, 42), backgroundColor: const Color.fromARGB(148, 14, 56, 90)), child: Text("Animation & Modeling", style: TextStyle(color: Colors.white))),
+    ElevatedButton(onPressed: () {}, style: ElevatedButton.styleFrom(minimumSize: Size(300, 42), backgroundColor: const Color.fromARGB(148, 14, 56, 90)), child: Text("Anime", style: TextStyle(color: Colors.white))),
+    ElevatedButton(onPressed: () {}, style: ElevatedButton.styleFrom(minimumSize: Size(300, 42), backgroundColor: const Color.fromARGB(148, 14, 56, 90)), child: Text("Casual", style: TextStyle(color: Colors.white))),
+    ElevatedButton(onPressed: () {}, style: ElevatedButton.styleFrom(minimumSize: Size(300, 42), backgroundColor: const Color.fromARGB(148, 14, 56, 90)), child: Text("Fighting", style: TextStyle(color: Colors.white))),
+    ElevatedButton(onPressed: () {}, style: ElevatedButton.styleFrom(minimumSize: Size(300, 42), backgroundColor: const Color.fromARGB(148, 14, 56, 90)), child: Text("Free to Play", style: TextStyle(color: Colors.white))),
+    ElevatedButton(onPressed: () {}, style: ElevatedButton.styleFrom(minimumSize: Size(300, 42), backgroundColor: const Color.fromARGB(148, 14, 56, 90)), child: Text("Horror", style: TextStyle(color: Colors.white))),
+    ElevatedButton(onPressed: () {}, style: ElevatedButton.styleFrom(minimumSize: Size(300, 42), backgroundColor: const Color.fromARGB(148, 14, 56, 90)), child: Text("Indie", style: TextStyle(color: Colors.white))),
+    ElevatedButton(onPressed: () {}, style: ElevatedButton.styleFrom(minimumSize: Size(300, 42), backgroundColor: const Color.fromARGB(148, 14, 56, 90)), child: Text("Music", style: TextStyle(color: Colors.white))),
+    ElevatedButton(onPressed: () {}, style: ElevatedButton.styleFrom(minimumSize: Size(300, 42), backgroundColor: const Color.fromARGB(148, 14, 56, 90)), child: Text("Narrative", style: TextStyle(color: Colors.white))),
+    ElevatedButton(onPressed: () {}, style: ElevatedButton.styleFrom(minimumSize: Size(300, 42), backgroundColor: const Color.fromARGB(148, 14, 56, 90)), child: Text("Platformer", style: TextStyle(color: Colors.white))),
+    ElevatedButton(onPressed: () {}, style: ElevatedButton.styleFrom(minimumSize: Size(300, 42), backgroundColor: const Color.fromARGB(148, 14, 56, 90)), child: Text("Puzzle", style: TextStyle(color: Colors.white))),
+    ElevatedButton(onPressed: () {}, style: ElevatedButton.styleFrom(minimumSize: Size(300, 42), backgroundColor: const Color.fromARGB(148, 14, 56, 90)), child: Text("Racing", style: TextStyle(color: Colors.white))),
+    ElevatedButton(onPressed: () {}, style: ElevatedButton.styleFrom(minimumSize: Size(300, 42), backgroundColor: const Color.fromARGB(148, 14, 56, 90)), child: Text("RPG", style: TextStyle(color: Colors.white))),
+    ElevatedButton(onPressed: () {}, style: ElevatedButton.styleFrom(minimumSize: Size(300, 42), backgroundColor: const Color.fromARGB(148, 14, 56, 90)), child: Text("Shooter", style: TextStyle(color: Colors.white))),
+    ElevatedButton(onPressed: () {}, style: ElevatedButton.styleFrom(minimumSize: Size(300, 42), backgroundColor: const Color.fromARGB(148, 14, 56, 90)), child: Text("Simulation", style: TextStyle(color: Colors.white))),
+    ElevatedButton(onPressed: () {}, style: ElevatedButton.styleFrom(minimumSize: Size(300, 42), backgroundColor: const Color.fromARGB(148, 14, 56, 90)), child: Text("Sports", style: TextStyle(color: Colors.white))),
+    ElevatedButton(onPressed: () {}, style: ElevatedButton.styleFrom(minimumSize: Size(300, 42), backgroundColor: const Color.fromARGB(148, 14, 56, 90)), child: Text("Strategy", style: TextStyle(color: Colors.white))),
+    ElevatedButton(onPressed: () {}, style: ElevatedButton.styleFrom(minimumSize: Size(300, 42), backgroundColor: const Color.fromARGB(148, 14, 56, 90)), child: Text("Survival", style: TextStyle(color: Colors.white))),
+    ElevatedButton(onPressed: () {}, style: ElevatedButton.styleFrom(minimumSize: Size(300, 42), backgroundColor: const Color.fromARGB(148, 14, 56, 90)), child: Text("Video Production", style: TextStyle(color: Colors.white))),
+  ];
+}
+
+//Para mostrar las imagenes del background
 Widget imageBackground(List<Juego> games, int index){
   return Image.network(
     'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/${games[index].id}/header.jpg?t=1720558643',
     fit: BoxFit.fitWidth,
     errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-      return const Icon(Icons.broken_image, size: 100, color: Colors.grey);
+      return const Icon(Icons.broken_image, size: 70, color: Colors.grey);
     },
     loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
       if (loadingProgress == null) return child;
