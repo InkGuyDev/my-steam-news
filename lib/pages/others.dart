@@ -178,7 +178,7 @@ Widget explorePageShow(){
           title: Text("Categorías", style: TextStyle(fontSize: 20),),
           subtitle: Text('Single-player, Full controller support etc.'),
           leading: Icon(Icons.menu, size: 35,),
-          children: optionsGender(),
+          children: optionsCategory(),
         ),
         Container(
           height: 80,
@@ -240,6 +240,22 @@ List<ElevatedButton> optionsGender(){
     ElevatedButton(onPressed: () {}, style: ElevatedButton.styleFrom(minimumSize: Size(300, 42), backgroundColor: const Color.fromARGB(148, 14, 56, 90)), child: Text("Strategy", style: TextStyle(color: Colors.white))),
     ElevatedButton(onPressed: () {}, style: ElevatedButton.styleFrom(minimumSize: Size(300, 42), backgroundColor: const Color.fromARGB(148, 14, 56, 90)), child: Text("Survival", style: TextStyle(color: Colors.white))),
     ElevatedButton(onPressed: () {}, style: ElevatedButton.styleFrom(minimumSize: Size(300, 42), backgroundColor: const Color.fromARGB(148, 14, 56, 90)), child: Text("Video Production", style: TextStyle(color: Colors.white))),
+  ];
+}
+
+List<ElevatedButton> optionsCategory(){
+  return [
+    ElevatedButton(onPressed: () {}, style: ElevatedButton.styleFrom(minimumSize: Size(300, 42), backgroundColor: const Color.fromARGB(148, 14, 56, 90)), child: Text("Single-player", style: TextStyle(color: Colors.white))),
+    ElevatedButton(onPressed: () {}, style: ElevatedButton.styleFrom(minimumSize: Size(300, 42), backgroundColor: const Color.fromARGB(148, 14, 56, 90)), child: Text("Multi-player", style: TextStyle(color: Colors.white))),
+    ElevatedButton(onPressed: () {}, style: ElevatedButton.styleFrom(minimumSize: Size(300, 42), backgroundColor: const Color.fromARGB(148, 14, 56, 90)), child: Text("Co-op", style: TextStyle(color: Colors.white))),
+    ElevatedButton(onPressed: () {}, style: ElevatedButton.styleFrom(minimumSize: Size(300, 42), backgroundColor: const Color.fromARGB(148, 14, 56, 90)), child: Text("MMO", style: TextStyle(color: Colors.white))),
+    ElevatedButton(onPressed: () {}, style: ElevatedButton.styleFrom(minimumSize: Size(300, 42), backgroundColor: const Color.fromARGB(148, 14, 56, 90)), child: Text("VR Support", style: TextStyle(color: Colors.white))),
+    ElevatedButton(onPressed: () {}, style: ElevatedButton.styleFrom(minimumSize: Size(300, 42), backgroundColor: const Color.fromARGB(148, 14, 56, 90)), child: Text("Full controller support", style: TextStyle(color: Colors.white))),
+    ElevatedButton(onPressed: () {}, style: ElevatedButton.styleFrom(minimumSize: Size(300, 42), backgroundColor: const Color.fromARGB(148, 14, 56, 90)), child: Text("Steam Workshop", style: TextStyle(color: Colors.white))),
+    ElevatedButton(onPressed: () {}, style: ElevatedButton.styleFrom(minimumSize: Size(300, 42), backgroundColor: const Color.fromARGB(148, 14, 56, 90)), child: Text("Trading Cards", style: TextStyle(color: Colors.white))),
+    ElevatedButton(onPressed: () {}, style: ElevatedButton.styleFrom(minimumSize: Size(300, 42), backgroundColor: const Color.fromARGB(148, 14, 56, 90)), child: Text("Achievements", style: TextStyle(color: Colors.white))),
+    ElevatedButton(onPressed: () {}, style: ElevatedButton.styleFrom(minimumSize: Size(300, 42), backgroundColor: const Color.fromARGB(148, 14, 56, 90)), child: Text("Remote Play", style: TextStyle(color: Colors.white))),
+    ElevatedButton(onPressed: () {}, style: ElevatedButton.styleFrom(minimumSize: Size(300, 42), backgroundColor: const Color.fromARGB(148, 14, 56, 90)), child: Text("Steam Deck", style: TextStyle(color: Colors.white))),
   ];
 }
 
