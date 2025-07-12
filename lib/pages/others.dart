@@ -26,7 +26,7 @@ class _OtherPageState extends State<OtherPage>{
               bottom: const TabBar(
                 tabs: [
                   Tab(text: 'Jugados recientemente'), //Lista de desados [Cambiado por no tener acceso]
-                  Tab(text: 'Juegos con más logros'),              //Seguidos [Cambiado por no tener acceso]
+                  Tab(text: 'Juegos con más logros'), //Seguidos [Cambiado por no tener acceso]
                 ],
                 indicatorSize: TabBarIndicatorSize.label,
                 indicatorColor: Color.fromARGB(255, 250, 253, 255),
@@ -51,19 +51,63 @@ class _OtherPageState extends State<OtherPage>{
 Widget recentlyPlayedPageShow(Widget Function(Noticia) newsFormat, List<Juego> games){
   print('Estamos en la pagina de la Jugados recientemente del usuario');
   return Scaffold(
-    appBar: AppBar(
-      title: Text('Tus jugados recientemente', style: TextStyle(color: Colors.white),),
-      backgroundColor: const Color.fromARGB(253, 14, 56, 90),
-    ),
     body: ListView.builder(
       itemCount: games.length,
       itemBuilder: (context, index) {
-        return ListTile(
-        title: Text(games[index].titulo, style: TextStyle(color: Colors.blueAccent),),
-        onTap: () {   
-          Navigator.push(context, MaterialPageRoute(builder: (context) => GamesPlayed(cardFormat: newsFormat, game: games[index])));
-        },
-      );
+        return Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: SizedBox(
+            height: 80,
+            child: Stack(
+              children: [
+                Positioned.fill(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Opacity(
+                      opacity: 0.7,
+                      child: imageBackground(games, index),
+                    )
+                  ),
+                ),
+                Positioned.fill(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color.fromARGB(0, 255, 255, 255),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      padding: const EdgeInsets.all(8),
+                    ),
+                    onPressed: () { Navigator.push(context, MaterialPageRoute(builder: (context) => GamesPlayed(cardFormat: newsFormat, game: games[index]))); },
+                    child: Stack(
+                      children: [
+                        Text(
+                          games[index].titulo,
+                          style: TextStyle(
+                            fontSize: 24,
+                            foreground: Paint()
+                              ..style = PaintingStyle.stroke
+                              ..strokeWidth = 3.5
+                              ..color = const Color.fromARGB(160, 22, 28, 36),
+                          ),
+                        ),
+                        Text(
+                          games[index].titulo,
+                          style: TextStyle(
+                            fontSize: 24,
+                            color: const Color.fromARGB(255, 255, 255, 255)
+                          ),
+                        ),
+                      ],
+                    ),
+                    
+                    //Text(games[index].titulo, style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0), fontSize: 24),),
+                  )
+                ),
+              ],
+            ),
+          ),
+        );
       }
     ),
   );
@@ -73,6 +117,26 @@ Widget achievementsGamesPageShow(){
   print('Estamos en la pagina de los Juegos con más logros del usuario');
   return Center(
     child: Text('Page in devolpment . . . papu', style: TextStyle(color: Colors.white),),
+  );
+}
+
+Widget imageBackground(List<Juego> games, int index){
+  return Image.network(
+    'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/${games[index].id}/header.jpg?t=1720558643',
+    fit: BoxFit.fitWidth,
+    errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+      return const Icon(Icons.broken_image, size: 100, color: Colors.grey);
+    },
+    loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+      if (loadingProgress == null) return child;
+        return const Center(
+        child: SizedBox(
+          width: 24, 
+          height: 24,
+          child: CircularProgressIndicator(strokeWidth: 2),
+        ),
+      );
+    },
   );
 }
 
@@ -109,14 +173,14 @@ class _GamesPlayedState extends State<GamesPlayed> {
       });
     }).catchError((e) => print('Error al cargar noticias para ${widget.game.titulo}: $e'));
 
-    print('Entrando a la pantalla NewsGame');
+    print('Entrando a la pantalla GamesPlayed');
   }
 
   @override
   Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(
-        title: Text('Noticias de ${widget.game.titulo}', style: TextStyle(color: Colors.white),),
+        title: Text('${widget.game.titulo}', style: TextStyle(color: Colors.white),),
         leading: IconButton(onPressed: () {Navigator.pop(context);}, icon: Icon(Icons.arrow_back)),
       ),
       body: ListView.builder(
