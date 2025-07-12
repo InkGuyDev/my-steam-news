@@ -14,9 +14,10 @@ import 'package:url_launcher/url_launcher.dart';
 //2767030 = Marvel Rivals
 
 class GameSearch extends SearchDelegate<String> {
+  
   final List<Juego> games;
   final Widget Function(Noticia) newsFormat;
-
+  
   GameSearch(this.games, this.newsFormat);
 
   @override
@@ -30,10 +31,8 @@ class GameSearch extends SearchDelegate<String> {
                 ? SystemUiOverlayStyle.light
                 : SystemUiOverlayStyle.dark,
         backgroundColor:
-            colorScheme.brightness == Brightness.dark
-                ? Colors.white
-                : const Color.fromARGB(255, 11, 40, 64),
-        iconTheme: theme.primaryIconTheme.copyWith(color: Colors.white),
+            colorScheme.brightness == Brightness.dark ? Colors.white : const Color.fromARGB(255, 11, 40, 64),
+        iconTheme: theme.primaryIconTheme.copyWith(color: Colors.white ),
         titleTextStyle: theme.textTheme.titleLarge,
         toolbarTextStyle: theme.textTheme.bodyMedium,
       ),
@@ -46,18 +45,24 @@ class GameSearch extends SearchDelegate<String> {
     );
   }
 
+
   @override
   String get searchFieldLabel => 'Buscar juego...';
 
   @override
-  TextStyle? get searchFieldStyle =>
-      const TextStyle(color: Colors.white, fontSize: 18);
+  TextStyle? get searchFieldStyle => const TextStyle(
+    color: Colors.white,
+    fontSize: 18,
+  );
 
   //Acciones del boton de la derecha
   @override
-  List<Widget> buildActions(BuildContext context) {
+  List<Widget> buildActions(BuildContext context){
     return [
-      IconButton(icon: const Icon(Icons.clear), onPressed: () => query = ''),
+      IconButton(
+        icon: const Icon(Icons.clear),
+        onPressed: () => query = '',
+      )
     ];
   }
 
@@ -72,119 +77,82 @@ class GameSearch extends SearchDelegate<String> {
 
   //Resultados de la busqueda
   @override
-  Widget buildResults(BuildContext context) {
-    final results =
-        games
-            .where(
-              (gameName) =>
-                  gameName.titulo.toLowerCase().contains(query.toLowerCase()),
-            )
-            .toList();
+  Widget buildResults(BuildContext context){
+    final results = games.where((gameName) => gameName.titulo.toLowerCase().contains(query.toLowerCase())).toList();
 
     return ListView.builder(
       itemCount: results.length,
-      itemBuilder:
-          (_, index) => ListTile(
-            title: Text(
-              results[index].titulo,
-              style: TextStyle(color: Colors.white),
-            ),
-            onTap: () {
-              close(context, results[index].titulo);
+      itemBuilder: (_, index) => ListTile(
+        title: Text(results[index].titulo, style: TextStyle(color: Colors.white),),
+        onTap: () {
+          close(context, results[index].titulo);
 
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder:
-                      (context) => NewsGame(
-                        cardFormat: newsFormat,
-                        game: results[index],
-                      ),
-                ),
-              );
-            },
-          ),
+          Navigator.push(context, MaterialPageRoute(builder: (context) => NewsGame(cardFormat: newsFormat, game: results[index])));
+        },
+      )
     );
   }
 
+
   //Sugerencias en tiempo real
   @override
-  Widget buildSuggestions(BuildContext context) {
-    final suggestions =
-        games
-            .where(
-              (gameName) =>
-                  gameName.titulo.toLowerCase().contains(query.toLowerCase()),
-            )
-            .toList();
+  Widget buildSuggestions(BuildContext context){
+    final suggestions = games.where((gameName) => gameName.titulo.toLowerCase().contains(query.toLowerCase())).toList();
 
     return ListView.builder(
       itemCount: suggestions.length,
-      itemBuilder:
-          (_, index) => ListTile(
-            title: Text(
-              suggestions[index].titulo,
-              style: TextStyle(color: Colors.blueAccent),
-            ),
-            onTap: () {
-              query = suggestions[index].titulo;
-              showSuggestions(context);
-            },
-          ),
+      itemBuilder: (_, index) => ListTile(
+        title: Text(suggestions[index].titulo, style: TextStyle(color: Colors.blueAccent),),
+        onTap: () {
+          query = suggestions[index].titulo; 
+          showSuggestions(context);       
+        },
+      ),
     );
   }
 }
 
-class SearchPage extends StatelessWidget {
-  const SearchPage({
-    super.key,
-    required this.gamesToSearch,
-    required this.newsFormat,
-    required this.serviceNew,
-  });
+
+class SearchPage extends StatelessWidget{
+  const SearchPage({super.key, required this.gamesToSearch, required this.newsFormat, required this.serviceNew});
 
   final List<Juego> gamesToSearch;
   final Widget Function(Noticia) newsFormat;
   final ServiceNews serviceNew;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(
         title: ElevatedButton(
-          style: ButtonStyle(
-            backgroundColor: WidgetStateProperty.all(
-              const Color.fromARGB(255, 25, 68, 103),
+            style: ButtonStyle(
+              backgroundColor: WidgetStateProperty.all(const Color.fromARGB(255, 25, 68, 103),),
+              foregroundColor: WidgetStateProperty.all(Colors.white),
             ),
-            foregroundColor: WidgetStateProperty.all(Colors.white),
+            onPressed: () {
+              showSearch(
+                context: context,
+                delegate: GameSearch(gamesToSearch, newsFormat),
+              );
+            }, 
+            child: Row(
+              children: [
+                Icon(Icons.search),
+                SizedBox(width: 15,),
+                Text('Buscar juego...'),
+              ],
+            ),
           ),
-          onPressed: () {
-            showSearch(
-              context: context,
-              delegate: GameSearch(gamesToSearch, newsFormat),
-            );
-          },
-          child: Row(
-            children: [
-              Icon(Icons.search),
-              SizedBox(width: 15),
-              Text('Buscar juego...'),
-            ],
-          ),
-        ),
         backgroundColor: const Color.fromARGB(253, 14, 56, 90),
       ),
       body: Center(
         child: Column(
           children: [
-            SizedBox(height: 20),
-            Card(
-              //Text('Search Page on development process . . . papu', style: TextStyle(color: Colors.white),),
+            SizedBox(height: 20,),
+            Card( //Text('Search Page on development process . . . papu', style: TextStyle(color: Colors.white),),
               elevation: 6,
               color: const Color.fromARGB(253, 14, 56, 90),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
               child: InkWell(
                 onTap: () {
                   launchSteamWeb();
@@ -194,30 +162,25 @@ class SearchPage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        '¡Revisa las novedades de Steam!',
-                        style: TextStyle(fontSize: 23),
-                      ),
+                      Text('¡Revisa las novedades de Steam!', style: TextStyle(fontSize: 23),),
                       SizedBox(height: 15),
-                      ImageSlider(
-                        imageUrls: [
-                          'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1174180/header.jpg?t=1720558643',
-                          'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2322010/header.jpg?t=1720558643',
-                          'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/367520/header.jpg?t=1720558643',
-                          'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/413150/header.jpg?t=1720558643',
-                          'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1364780/header.jpg?t=1720558643',
-                          'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2767030/header.jpg?t=1720558643',
-                        ],
-                      ),
+                      ImageSlider(imageUrls: [
+                        'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1174180/header.jpg?t=1720558643',
+                        'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2322010/header.jpg?t=1720558643',
+                        'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/367520/header.jpg?t=1720558643',
+                        'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/413150/header.jpg?t=1720558643',
+                        'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1364780/header.jpg?t=1720558643',
+                        'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2767030/header.jpg?t=1720558643'
+                      ]),
                       SizedBox(height: 15),
                       Text('Novedades en juegos y ofertas'),
                     ],
                   ),
                 ),
-              ),
+              )
             ),
           ],
-        ),
+        )
       ),
     );
   }
@@ -297,58 +260,43 @@ class NewsGame extends StatefulWidget {
   const NewsGame({super.key, required this.cardFormat, required this.game});
 
   final Widget Function(Noticia) cardFormat;
-  final Juego game;
+  final Juego game; 
 
   @override
   State<NewsGame> createState() => _NewsGameState();
 }
 
 class _NewsGameState extends State<NewsGame> {
+  
   List<Noticia> listNews = [];
   ServiceNews serviceNew = ServiceNews();
 
   @override
   void initState() {
     super.initState();
-    serviceNew
-        .getNews(widget.game.id.toString(), '20')
-        .then((newsOfThisGame) {
-          serviceNew.getGameDetails(widget.game.id.toString()).then((
-            gameDetail,
-          ) {
-            for (var noticia in newsOfThisGame) {
-              noticia.images = gameDetail.images;
-            }
+    serviceNew.getNews(widget.game.id.toString(), '20').then((newsOfThisGame) {
+      serviceNew.getGameDetails(widget.game.id.toString()).then((gameDetail) {
+        for (var noticia in newsOfThisGame) {
+          noticia.images = gameDetail.images;
+        }
 
-            setState(() {
-              listNews = newsOfThisGame;
-            });
+        setState(() {
+          listNews = newsOfThisGame;
+        });
 
-            print('Noticias cargadas con imágenes para ${widget.game.titulo}');
-          });
-        })
-        .catchError(
-          (e) =>
-              print('Error al cargar noticias para ${widget.game.titulo}: $e'),
-        );
+        print('Noticias cargadas con imágenes para ${widget.game.titulo}');
+      });
+    }).catchError((e) => print('Error al cargar noticias para ${widget.game.titulo}: $e'));
 
     print('Entrando a la pantalla NewsGame');
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Noticias de ${widget.game.titulo}',
-          style: TextStyle(color: Colors.white),
-        ),
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: Icon(Icons.arrow_back),
-        ),
+        title: Text('Noticias de ${widget.game.titulo}', style: TextStyle(color: Colors.white),),
+        leading: IconButton(onPressed: () {Navigator.pop(context);}, icon: Icon(Icons.arrow_back)),
       ),
       body: ListView.builder(
         itemCount: listNews.length,

@@ -4,12 +4,8 @@ import 'package:my_steam_news/domain/entities/usuario.dart';
 
 // Pagina Home de la aplicación, la que aparece al ingresar
 class Homepage extends StatefulWidget {
-  const Homepage({
-    super.key,
-    required this.newsFormat,
-    required this.listGameNewsHome,
-  });
-
+  const Homepage({super.key, required this.newsFormat, required this.listGameNewsHome});
+  
   final Widget Function(Noticia) newsFormat;
   final List<Noticia> listGameNewsHome;
 
@@ -18,6 +14,8 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomePageState extends State<Homepage> {
+
+
   @override
   void initState() {
     super.initState();
@@ -42,12 +40,7 @@ class _HomePageState extends State<Homepage> {
               backgroundColor: const Color.fromARGB(253, 14, 56, 90),
             ),
           ),
-          body: TabBarView(
-            children: [
-              yourGamesPageShow(widget.listGameNewsHome, widget.newsFormat),
-              newsPageShow(),
-            ],
-          ),
+          body: TabBarView(children: [yourGamesPageShow(widget.listGameNewsHome, widget.newsFormat), newsPageShow()]),
         ),
       ),
     );
@@ -55,10 +48,7 @@ class _HomePageState extends State<Homepage> {
 }
 
 // Para mostrar las noticias de los juegos principales del usuario
-Widget yourGamesPageShow(
-  List<Noticia> listGameHome,
-  Widget Function(Noticia) cardFormat,
-) {
+Widget yourGamesPageShow(List<Noticia> listGameHome, Widget Function(Noticia) cardFormat) {
   print('Cantidad de noticias en listGameHome: ${listGameHome.length}');
   return ListView.builder(
     itemCount: listGameHome.length,

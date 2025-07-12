@@ -3,12 +3,8 @@ import 'package:my_steam_news/data/services/service_news.dart';
 import 'package:my_steam_news/domain/entities/juego.dart';
 import 'package:my_steam_news/domain/entities/noticia.dart';
 
-class OtherPage extends StatefulWidget {
-  const OtherPage({
-    super.key,
-    required this.newsFormat,
-    required this.gamesPlayed,
-  });
+class OtherPage extends StatefulWidget{
+  const OtherPage({super.key, required this.newsFormat, required this.gamesPlayed});
 
   final Widget Function(Noticia) newsFormat;
   final List<Juego> gamesPlayed;
@@ -17,24 +13,20 @@ class OtherPage extends StatefulWidget {
   State<OtherPage> createState() => _OtherPageState();
 }
 
-class _OtherPageState extends State<OtherPage> {
+class _OtherPageState extends State<OtherPage>{
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
     return Center(
       child: DefaultTabController(
-        length: 2,
+        length: 2, 
         child: Scaffold(
-          appBar: PreferredSize(
-            preferredSize: Size.fromHeight(60),
+          appBar: PreferredSize(preferredSize:Size.fromHeight(60), 
             child: AppBar(
               bottom: const TabBar(
                 tabs: [
-                  Tab(
-                    text: 'Jugados recientemente',
-                  ), //Lista de desados [Cambiado por no tener acceso]
-                  Tab(
-                    text: 'Juegos con más logros',
-                  ), //Seguidos [Cambiado por no tener acceso]
+                  Tab(text: 'Jugados recientemente'), //Lista de desados [Cambiado por no tener acceso]
+                  Tab(text: 'Juegos con más logros'), //Seguidos [Cambiado por no tener acceso]
                 ],
                 indicatorSize: TabBarIndicatorSize.label,
                 indicatorColor: Color.fromARGB(255, 250, 253, 255),
@@ -43,65 +35,108 @@ class _OtherPageState extends State<OtherPage> {
               backgroundColor: const Color.fromARGB(253, 14, 56, 90),
             ),
           ),
-          body: TabBarView(
-            children: [
-              recentlyPlayedPageShow(widget.newsFormat, widget.gamesPlayed),
-              achievementsGamesPageShow(),
-            ],
-          ),
-        ),
+          body: TabBarView(children: [
+            recentlyPlayedPageShow(widget.newsFormat, widget.gamesPlayed),
+            achievementsGamesPageShow(),
+          ])
+        )
       ),
     );
   }
 }
 
+
 // Funciones que muestran el contenido en pantalla
 // Para mostrar las noticias de los juegos principales del usuario
-Widget recentlyPlayedPageShow(
-  Widget Function(Noticia) newsFormat,
-  List<Juego> games,
-) {
+Widget recentlyPlayedPageShow(Widget Function(Noticia) newsFormat, List<Juego> games){
   print('Estamos en la pagina de la Jugados recientemente del usuario');
   return Scaffold(
-    appBar: AppBar(
-      title: Text(
-        'Tus jugados recientemente',
-        style: TextStyle(color: Colors.white),
-      ),
-      backgroundColor: const Color.fromARGB(253, 14, 56, 90),
-    ),
     body: ListView.builder(
       itemCount: games.length,
       itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(
-            games[index].titulo,
-            style: TextStyle(color: Colors.blueAccent),
+        return Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: SizedBox(
+            height: 80,
+            child: Stack(
+              children: [
+                Positioned.fill(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Opacity(
+                      opacity: 0.7,
+                      child: imageBackground(games, index),
+                    )
+                  ),
+                ),
+                Positioned.fill(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color.fromARGB(0, 255, 255, 255),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      padding: const EdgeInsets.all(8),
+                    ),
+                    onPressed: () { Navigator.push(context, MaterialPageRoute(builder: (context) => GamesPlayed(cardFormat: newsFormat, game: games[index]))); },
+                    child: Stack(
+                      children: [
+                        Text(
+                          games[index].titulo,
+                          style: TextStyle(
+                            fontSize: 24,
+                            foreground: Paint()
+                              ..style = PaintingStyle.stroke
+                              ..strokeWidth = 3.5
+                              ..color = const Color.fromARGB(160, 22, 28, 36),
+                          ),
+                        ),
+                        Text(
+                          games[index].titulo,
+                          style: TextStyle(
+                            fontSize: 24,
+                            color: const Color.fromARGB(255, 255, 255, 255)
+                          ),
+                        ),
+                      ],
+                    ),
+                    
+                    //Text(games[index].titulo, style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0), fontSize: 24),),
+                  )
+                ),
+              ],
+            ),
           ),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder:
-                    (context) =>
-                        GamesPlayed(cardFormat: newsFormat, game: games[index]),
-              ),
-            );
-          },
         );
-      },
+      }
     ),
   );
 }
-
 // Para mostrar las noticias más recientes de varios juegos (populares o no)
-Widget achievementsGamesPageShow() {
+Widget achievementsGamesPageShow(){
   print('Estamos en la pagina de los Juegos con más logros del usuario');
   return Center(
-    child: Text(
-      'Page in devolpment . . . papu',
-      style: TextStyle(color: Colors.white),
-    ),
+    child: Text('Page in devolpment . . . papu', style: TextStyle(color: Colors.white),),
+  );
+}
+
+Widget imageBackground(List<Juego> games, int index){
+  return Image.network(
+    'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/${games[index].id}/header.jpg?t=1720558643',
+    fit: BoxFit.fitWidth,
+    errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+      return const Icon(Icons.broken_image, size: 100, color: Colors.grey);
+    },
+    loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+      if (loadingProgress == null) return child;
+        return const Center(
+        child: SizedBox(
+          width: 24, 
+          height: 24,
+          child: CircularProgressIndicator(strokeWidth: 2),
+        ),
+      );
+    },
   );
 }
 
@@ -110,58 +145,43 @@ class GamesPlayed extends StatefulWidget {
   const GamesPlayed({super.key, required this.cardFormat, required this.game});
 
   final Widget Function(Noticia) cardFormat;
-  final Juego game;
+  final Juego game; 
 
   @override
   State<GamesPlayed> createState() => _GamesPlayedState();
 }
 
 class _GamesPlayedState extends State<GamesPlayed> {
+  
   List<Noticia> listNews = [];
   ServiceNews serviceNew = ServiceNews();
 
   @override
   void initState() {
     super.initState();
-    serviceNew
-        .getNews(widget.game.id.toString(), '20')
-        .then((newsOfThisGame) {
-          serviceNew.getGameDetails(widget.game.id.toString()).then((
-            gameDetail,
-          ) {
-            for (var noticia in newsOfThisGame) {
-              noticia.images = gameDetail.images;
-            }
+    serviceNew.getNews(widget.game.id.toString(), '20').then((newsOfThisGame) {
+      serviceNew.getGameDetails(widget.game.id.toString()).then((gameDetail) {
+        for (var noticia in newsOfThisGame) {
+          noticia.images = gameDetail.images;
+        }
 
-            setState(() {
-              listNews = newsOfThisGame;
-            });
+        setState(() {
+          listNews = newsOfThisGame;
+        });
 
-            print('Noticias cargadas con imágenes para ${widget.game.titulo}');
-          });
-        })
-        .catchError(
-          (e) =>
-              print('Error al cargar noticias para ${widget.game.titulo}: $e'),
-        );
+        print('Noticias cargadas con imágenes para ${widget.game.titulo}');
+      });
+    }).catchError((e) => print('Error al cargar noticias para ${widget.game.titulo}: $e'));
 
-    print('Entrando a la pantalla NewsGame');
+    print('Entrando a la pantalla GamesPlayed');
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Noticias de ${widget.game.titulo}',
-          style: TextStyle(color: Colors.white),
-        ),
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: Icon(Icons.arrow_back),
-        ),
+        title: Text('${widget.game.titulo}', style: TextStyle(color: Colors.white),),
+        leading: IconButton(onPressed: () {Navigator.pop(context);}, icon: Icon(Icons.arrow_back)),
       ),
       body: ListView.builder(
         itemCount: listNews.length,

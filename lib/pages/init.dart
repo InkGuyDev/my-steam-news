@@ -11,7 +11,6 @@ import 'package:my_steam_news/domain/entities/noticia.dart';
 import 'package:my_steam_news/domain/entities/usuario.dart';
 import 'package:my_steam_news/data/services/service_news.dart';
 import 'package:my_steam_news/data/services/app_data.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -50,114 +49,86 @@ class _InitPageState extends State<InitPage> {
   List<Noticia> listGamesUserNewsPerGame = [];
 
   @override
-  @override
-  void initState() {
+  void initState(){
     super.initState();
   }
 
-  void loadUserGames() {
+  void loadUserGames(){
     final userId = context.watch<Appdata>().usageId.toString();
     listGameHome.clear();
     _userLoaded = false;
 
     //Conseguir IDs de juegos del usuario
     serviceNew
-        .getUserGamesIds(userId)
-        .then((user) {
-          setState(() {
-            userprof = user;
-          });
+      .getUserGamesIds(userId)
+      .then((user) {
+        setState(() {
+          userprof = user;
+        });
 
-          showIdHalfLife(userprof);
+        showIdHalfLife(userprof);
 
-          if (userprof.idsGames.isNotEmpty) {
-            for (var idGame in userprof.idsGames) {
-              serviceNew
-                  .getNews(idGame.toString(), quantityOfNewsPerGame.toString())
-                  .then((news) async {
-                    final gameDetail = await serviceNew.getGameDetails(
-                      idGame.toString(),
-                    );
+        if (userprof.idsGames.isNotEmpty) {
+          for (var idGame in userprof.idsGames) {
+            serviceNew.getNews(idGame.toString(), quantityOfNewsPerGame.toString()).then((news) async {
+              final gameDetail = await serviceNew.getGameDetails(idGame.toString());
 
-                    // Asigna imágenes a las noticias
-                    for (var newPerGame in news) {
-                      newPerGame.images = gameDetail.images;
-                    }
+              // Asigna imágenes a las noticias
+              for (var newPerGame in news) {
+                newPerGame.images = gameDetail.images;
+              }
 
-                    setState(() {
-                      listGameHome.addAll(news);
-                    });
+              setState(() {
+                listGameHome.addAll(news);
+              });
 
-                    print(
-                      'Se agregaron ${news.length} noticias con imágenes para ${gameDetail.titulo}',
-                    );
-                  })
-                  .catchError((e) {
-                    print('Error al obtener datos para $idGame: $e');
-                  });
-            }
+              print('Se agregaron ${news.length} noticias con imágenes para ${gameDetail.titulo}');
+            }).catchError((e) {
+              print('Error al obtener datos para $idGame: $e');
+            });
           }
-        })
-        .catchError((e) => print('failed to work with API data $e'));
-
+        }
+      })
+      .catchError((e) => print('failed to work with API data $e'));
+    
     //Conseguir juegos (nombres e ids) de la app
-    serviceNew
-        .getGameAppList()
-        .then((games) {
-          setState(() {
-            listGamesApp = games;
-          });
-        })
-        .catchError((e) => print('failed to load game app list'));
+    serviceNew.getGameAppList().then((games) {
+      setState(() {
+        listGamesApp = games;
+      });
+    }).catchError((e) => print('failed to load game app list'));
 
     //Juegos recientemente jugados
-    serviceNew
-        .getRecentlyPlayedGames(userprof.id.toString())
-        .then((games) {
-          setState(() {
-            listGamesRecentlyPlay = games;
-          });
-        })
-        .catchError((e) => print('failed to load recently game played'));
-
+    serviceNew.getRecentlyPlayedGames(userprof.id.toString()).then((games) {
+      setState(() {
+        listGamesRecentlyPlay = games;
+      });
+    }).catchError((e) => print('failed to load recently game played'));
+    
+    
     print('Se cargaron los datos de las API');
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(
-          65,
-        ), // AppBar principal, este nunca cambia y se mantiene en toda la aplicación
-        child: AppBar(
+      appBar: PreferredSize(preferredSize: Size.fromHeight(65), // AppBar principal, este nunca cambia y se mantiene en toda la aplicación
+        child: AppBar( 
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              //Diferentes botones superiores y el logo de la app: Usuario, Logo, Preferencias
-              IconButton(
-                icon: const Icon(Icons.person, color: Colors.white, size: 35),
-                onPressed: () {
-                  changeToUserPage(context);
-                },
-              ),
-              Text(
-                'Insertar logo Aqui',
-                style: TextStyle(color: Colors.white, fontSize: 18),
-              ),
-              IconButton(
-                icon: const Icon(Icons.settings, color: Colors.white, size: 35),
-                onPressed: () {
-                  changeToPreferencesPage(context);
-                },
-              ),
+            children: [ //Diferentes botones superiores y el logo de la app: Usuario, Logo, Preferencias
+              IconButton( icon: const Icon(Icons.person, color: Colors.white, size: 35,),
+                onPressed: () { changeToUserPage(context); }, ),
+              Text('Insertar logo Aqui', style: TextStyle(color: Colors.white, fontSize: 18)),
+              IconButton( icon: const Icon(Icons.settings, color: Colors.white, size: 35,),
+                onPressed: () { changeToPreferencesPage(context); }, ),
             ],
           ),
         ),
       ),
       // Botones en el pie del inicio
       bottomNavigationBar: NavigationBar(
-        onDestinationSelected: (int index) {
+        onDestinationSelected: (int index){
           setState(() {
             currentPageIndex = index;
           });
@@ -167,73 +138,52 @@ class _InitPageState extends State<InitPage> {
         selectedIndex: currentPageIndex,
         destinations: const <Widget>[
           NavigationDestination(
-            selectedIcon: Icon(Icons.home, color: Colors.white),
-            icon: Icon(Icons.home_outlined, color: Colors.white),
-            label: 'Inicio',
+            selectedIcon: Icon(Icons.home, color: Colors.white,),
+            icon: Icon(Icons.home_outlined, color: Colors.white,), label: 'Inicio',
           ),
           NavigationDestination(
-            selectedIcon: Icon(Icons.search, color: Colors.white),
-            icon: Icon(Icons.search_outlined, color: Colors.white),
-            label: 'Buscar',
+            selectedIcon: Icon(Icons.search, color: Colors.white,),
+            icon: Icon(Icons.search_outlined, color: Colors.white,), label: 'Buscar',
           ),
           NavigationDestination(
-            selectedIcon: Icon(Icons.favorite_sharp, color: Colors.white),
-            icon: Icon(Icons.favorite_border, color: Colors.white),
-            label: 'Favoritos',
+            selectedIcon: Icon(Icons.favorite_sharp, color: Colors.white,),
+            icon: Icon(Icons.favorite_border, color: Colors.white,), label: 'Favoritos',
           ),
           NavigationDestination(
-            selectedIcon: Icon(Icons.menu_sharp, color: Colors.white),
-            icon: Icon(Icons.menu_rounded, color: Colors.white),
-            label: 'Otros',
+            selectedIcon: Icon(Icons.menu_sharp, color: Colors.white,),
+            icon: Icon(Icons.menu_rounded, color: Colors.white,), label: 'Otros',
           ),
         ],
       ),
       // Body para agregar los Widget del BottomNavigationBar
-      body:
-          <Widget>[
-            Homepage(listGameNewsHome: listGameHome, newsFormat: cardFormat),
-            SearchPage(
-              gamesToSearch: listGamesApp,
-              newsFormat: cardFormat,
-              serviceNew: serviceNew,
-            ),
-            FavoritePage(),
-            OtherPage(
-              newsFormat: cardFormat,
-              gamesPlayed: listGamesRecentlyPlay,
-            ),
-          ][currentPageIndex],
+      body: <Widget> [
+        Homepage(listGameNewsHome: listGameHome, newsFormat: cardFormat,),
+        SearchPage(gamesToSearch: listGamesApp, newsFormat: cardFormat, serviceNew: serviceNew,),
+        FavoritePage(),
+        OtherPage(newsFormat: cardFormat, gamesPlayed: listGamesRecentlyPlay,)
+      ][currentPageIndex],
     );
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies;
-    if (_userLoaded) {
-      return;
-    }
-
+  void didChangeDependencies(){
+    super.didChangeDependencies();
+    if (_userLoaded) return;
+    _userLoaded = true;
     loadUserGames();
   }
 }
 
 // Funciones para cambiar entre paginas (Navegación)
 // Para ir a la pagina del perfil de usuario
-void changeToUserPage(BuildContext context) {
+void changeToUserPage(BuildContext context){
   print('Cambiamos a la pagina del usuario');
-  Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => UserProfilePage()),
-  );
+  Navigator.push(context, MaterialPageRoute(builder: (context) => UserProfilePage()));
 }
-
 // Para ir a las preferencias
-void changeToPreferencesPage(BuildContext context) {
+void changeToPreferencesPage(BuildContext context){
   print('Cambiamos a la pagina de preferencias');
-  Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => PreferencesPage()),
-  );
+  Navigator.push(context, MaterialPageRoute(builder: (context) => PreferencesPage()));
 }
 
 //Formato de Card para mostrar las noticias
@@ -259,7 +209,7 @@ Widget cardFormat(Noticia noticia) {
             const SizedBox(height: 6),
             Text(noticia.title, style: cardTitleTextStyle),
             const SizedBox(height: 6),
-            Center(child: imageGameCard(noticia)),
+            Center(child: imageGameCard(noticia),),
             const SizedBox(height: 10),
             Row(
               children: [
@@ -292,7 +242,7 @@ Future<void> _launchUrl(String url) async {
 }
 
 //funcion para inicializar la imagen
-Widget imageGameCard(Noticia noticia) {
+Widget imageGameCard(Noticia noticia){
   final List<String> imagenes = noticia.images ?? [];
   if (imagenes.isNotEmpty) {
     final randomImage = imagenes[Random().nextInt(imagenes.length)];
