@@ -158,7 +158,7 @@ class SearchPage extends StatelessWidget{
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
               child: InkWell(
                 onTap: () {
-                  launchSteamWeb();
+                  launchSteamWeb('https://store.steampowered.com');
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
@@ -182,6 +182,41 @@ class SearchPage extends StatelessWidget{
                 ),
               )
             ),
+            SizedBox(height: 10,),
+            SizedBox(
+              width: 395,
+              child: Card(
+                elevation: 6,
+                color: const Color.fromARGB(253, 14, 56, 90),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                child: InkWell(
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Column(
+                      children: [
+                        Text('Busca por categoria en la tienda', style: TextStyle(fontSize: 23),),
+                        SizedBox(height: 10,),
+                        Row(
+                          children: [
+                            formatRecomendationCard('Aventura', 'https://store.steampowered.com/category/adventure?snr=1_4_600__242_2'),
+                            Spacer(),
+                            formatRecomendationCard('Estrategia', 'https://store.steampowered.com/category/strategy?snr=1_4_600__242_5')
+                          ],
+                        ),
+                        SizedBox(height: 10,),
+                        Row(
+                          children: [
+                            formatRecomendationCard('Casual', 'https://store.steampowered.com/category/casual?snr=1_4_600__242_1'),
+                            Spacer(),
+                            formatRecomendationCard('Juegos de Lucha', 'https://store.steampowered.com/category/fighting_martial_arts?snr=1_4_600__242_1')
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                )
+              ),
+            )
           ],
         )
       ),
@@ -190,12 +225,35 @@ class SearchPage extends StatelessWidget{
 }
 
 //Para dirigirse a la pagina de principal de Steam
-Future<void> launchSteamWeb() async {
-  final Uri url = Uri.parse('https://store.steampowered.com');
+Future<void> launchSteamWeb(String url) async {
+  final Uri url1 = Uri.parse(url);
 
-  if (!await launchUrl(url)) {
+  if (!await launchUrl(url1)) {
     throw Exception('Could not launch $url');
   }
+}
+
+//Formato para Cards de recomendacion
+SizedBox formatRecomendationCard(String name, String url) {
+  return SizedBox(
+    width: 180,
+    height: 120,
+    child: Card(
+      elevation: 6,
+      color: const Color.fromARGB(50, 255, 255, 255),
+      child: InkWell(
+        onTap: () {
+          launchSteamWeb(url);
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Center(
+            child: Text(name, style: TextStyle(fontSize: 23)),
+          )
+        ),
+      ),
+    ),
+  );
 }
 
 //Para pasar las imagenes simuladas
@@ -217,7 +275,7 @@ class _ImageSliderState extends State<ImageSlider> {
     super.initState();
     _pageController = PageController(initialPage: _currentPage);
 
-    _timer = Timer.periodic(Duration(seconds: 5), (Timer timer) {
+    _timer = Timer.periodic(Duration(seconds: 4), (Timer timer) {
       if (_currentPage < widget.imageUrls.length - 1) {
         _currentPage++;
       } else {
