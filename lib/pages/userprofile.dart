@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:my_steam_news/data/services/service_news.dart';
-import 'package:my_steam_news/domain/entities/usuario.dart';
 import 'package:provider/provider.dart';
 import 'package:my_steam_news/data/services/app_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';

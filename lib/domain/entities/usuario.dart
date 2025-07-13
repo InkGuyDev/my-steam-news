@@ -1,5 +1,5 @@
 class User {
-  final int? id;
+  int? id;
   final String? name;
   final String? profileUrl;
   final String? avatarUrl;
@@ -19,12 +19,30 @@ class User {
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
+    // Datos de juegos
     final response = json['response'];
-    final gamesList = json['response']['games'] as List<dynamic>? ?? [];
+    final gamesList = response['games'] as List<dynamic>?;
 
-    final ids = gamesList.map((game) => game['appid'] as int).toList();
-    final count = response['game_count'] ?? ids.length;
+    if (gamesList != null) {
+      final ids = gamesList.map((game) => game['appid'] as int).toList();
+      final count = response['game_count'] ?? ids.length;
 
-    return User(idsGames: ids, gameCount: count);
+      return User(idsGames: ids, gameCount: count);
+    }
+
+    // Datos del perfil
+    final players = response['players'] as List<dynamic>?;
+    if (players != null && players.isNotEmpty) {
+      final player = players.first;
+      return User(
+        name: player['personaname'],
+        avatarUrl: player['avatarfull'],
+        profileUrl: player['profileurl'],
+        idsGames: [],
+        gameCount: 0,
+      );
+    }
+
+    return User(idsGames: [], gameCount: 0);
   }
 }

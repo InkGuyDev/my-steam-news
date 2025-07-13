@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:my_steam_news/data/services/app_data.dart';
+import 'package:my_steam_news/no_connection_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:my_steam_news/pages/init.dart';
 import 'package:flutter/services.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'dart:async';
 
 void main() {
   runApp(
@@ -10,9 +13,39 @@ void main() {
   );
 }
 
-// MyApp para controlar datos visuales de la aplicación
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  bool _hasConnection = true;
+  late final StreamSubscription _subscription;
+
+  @override
+  void initState() {
+    super.initState();
+    _monitorConnection();
+  }
+
+  void _monitorConnection() async {
+    final initialStatus = await Connectivity().checkConnectivity();
+    setState(
+      () => _hasConnection = initialStatus[0] != ConnectivityResult.none,
+    );
+
+    _subscription = Connectivity().onConnectivityChanged.listen((result) {
+      setState(() => _hasConnection = result[0] != ConnectivityResult.none);
+    });
+  }
+
+  @override
+  void dispose() {
+    _subscription.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,8 +76,8 @@ class MyApp extends StatelessWidget {
           unselectedLabelColor: Colors.white70,
           indicatorColor: Colors.white,
         ),
-        iconTheme: IconThemeData(color: Colors.white),
-        textTheme: TextTheme(
+        iconTheme: const IconThemeData(color: Colors.white),
+        textTheme: const TextTheme(
           titleLarge: TextStyle(color: Colors.white),
           titleSmall: TextStyle(color: Colors.white),
           titleMedium: TextStyle(color: Colors.white),
@@ -53,39 +86,18 @@ class MyApp extends StatelessWidget {
           bodyLarge: TextStyle(color: Colors.white),
         ),
         navigationBarTheme: NavigationBarThemeData(
-          iconTheme: WidgetStateProperty.all(const IconThemeData(color: Colors.white),),
+          iconTheme: WidgetStateProperty.all(
+            const IconThemeData(color: Colors.white),
+          ),
           labelTextStyle: WidgetStateProperty.all(
-            const TextStyle(
-              color: Colors.white,
-              //fontWeight: FontWeight.w500,
-            ),
+            const TextStyle(color: Colors.white),
           ),
         ),
       ),
-      /*ThemeData(
-        scaffoldBackgroundColor: const Color.fromARGB(255, 51, 63, 84),
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 183, 58, 100)),
-        textTheme: TextTheme(
-          titleMedium: TextStyle(color: Colors.white),
-        ),
-      ),*/
-      home: InitPage(title: 'Inicio'),
+      home:
+          _hasConnection
+              ? const InitPage(title: 'Inicio')
+              : const NoConnectionScreen(),
     );
   }
 }
-
-/*
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
-    );
-  }
-}*/

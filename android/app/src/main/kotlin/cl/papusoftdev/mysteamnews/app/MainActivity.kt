@@ -1,4 +1,4 @@
-package com.example.my_steam_news
+package cl.papusoftdev.mysteamnews.app
 
 import io.flutter.embedding.android.FlutterActivity
 
