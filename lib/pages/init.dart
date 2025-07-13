@@ -125,6 +125,7 @@ class _InitPageState extends State<InitPage> {
             listGamesApp = games;
           });
 
+<<<<<<< HEAD
       // Conseguir noticias de los primeros 30 juegos de la app
       /*for (int i = games.length - 1; i >= games.length - 10; i--) {
         serviceNew.getNews(games[i].id.toString(), '1').then((gamesNew) {
@@ -134,6 +135,21 @@ class _InitPageState extends State<InitPage> {
         }).catchError((e) => print('failed to load game news'));
       }*/
     }).catchError((e) => print('failed to load game app list'));
+=======
+          // Conseguir noticias de los primeros 30 juegos de la app
+          for (int i = games.length - 1; i >= games.length - 10; i--) {
+            serviceNew
+                .getNews(games[i].id.toString(), '1')
+                .then((gamesNew) {
+                  setState(() {
+                    listGameNewsHome.addAll(gamesNew);
+                  });
+                })
+                .catchError((e) => print('failed to load game news'));
+          }
+        })
+        .catchError((e) => print('failed to load game app list'));
+>>>>>>> 5786ec8e0e9371df69a9753062b3f76b04248016
 
     //Juegos recientemente jugados
     serviceNew
