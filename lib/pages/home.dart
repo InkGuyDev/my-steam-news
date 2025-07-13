@@ -4,9 +4,10 @@ import 'package:my_steam_news/domain/entities/usuario.dart';
 
 // Pagina Home de la aplicación, la que aparece al ingresar
 class Homepage extends StatefulWidget {
-  const Homepage({super.key, required this.newsFormat, required this.listGameNewsHome});
+  const Homepage({super.key, required this.newsFormat, required this.listGameUserHome, required this.listGameNewsHome});
   
   final Widget Function(Noticia) newsFormat;
+  final List<Noticia> listGameUserHome;
   final List<Noticia> listGameNewsHome;
 
   @override
@@ -40,7 +41,12 @@ class _HomePageState extends State<Homepage> {
               backgroundColor: const Color.fromARGB(253, 14, 56, 90),
             ),
           ),
-          body: TabBarView(children: [yourGamesPageShow(widget.listGameNewsHome, widget.newsFormat), newsPageShow()]),
+          body: TabBarView(
+            children: [
+              yourGamesPageShow(widget.listGameUserHome, widget.newsFormat), 
+              newsPageShow(widget.listGameNewsHome, widget.newsFormat)
+            ]
+          ),
         ),
       ),
     );
@@ -63,13 +69,17 @@ Widget yourGamesPageShow(List<Noticia> listGameHome, Widget Function(Noticia) ca
 }
 
 // Para mostrar las noticias más recientes de varios juegos (populares o no)
-Widget newsPageShow() {
+Widget newsPageShow(List<Noticia> listGameNewsPage, Widget Function(Noticia) cardFormat) {
   print('Estamos en la pagina de novedades del usuario');
-  return Center(
-    child: Text(
-      'Page in devolpment . . . papu',
-      style: TextStyle(color: Colors.white),
-    ),
+  return ListView.builder(
+    itemCount: listGameNewsPage.length,
+    itemBuilder: (context, index) {
+      print('Renderizando noticia en índice $index');
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: cardFormat(listGameNewsPage[index]),
+      );
+    },
   );
 }
 

@@ -38,7 +38,29 @@ class MyApp extends StatelessWidget {
           border: InputBorder.none,
         ),
         scaffoldBackgroundColor: const Color.fromARGB(255, 51, 63, 84),
-        textTheme: TextTheme(titleMedium: TextStyle(color: Colors.white)),
+        tabBarTheme: TabBarTheme(
+          labelColor: Colors.white,
+          unselectedLabelColor: Colors.white70,
+          indicatorColor: Colors.white,
+        ),
+        iconTheme: IconThemeData(color: Colors.white),
+        textTheme: TextTheme(
+          titleLarge: TextStyle(color: Colors.white),
+          titleSmall: TextStyle(color: Colors.white),
+          titleMedium: TextStyle(color: Colors.white),
+          bodySmall: TextStyle(color: Colors.white),
+          bodyMedium: TextStyle(color: Colors.white),
+          bodyLarge: TextStyle(color: Colors.white),
+        ),
+        navigationBarTheme: NavigationBarThemeData(
+          iconTheme: WidgetStateProperty.all(const IconThemeData(color: Colors.white),),
+          labelTextStyle: WidgetStateProperty.all(
+            const TextStyle(
+              color: Colors.white,
+              //fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
       ),
       /*ThemeData(
         scaffoldBackgroundColor: const Color.fromARGB(255, 51, 63, 84),
