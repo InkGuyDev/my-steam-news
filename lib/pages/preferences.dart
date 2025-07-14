@@ -97,8 +97,8 @@ class _PreferencesPageState extends State<PreferencesPage> {
                         ),
                       );
                     },
-                    label: const Text('Acerca de'),
-                    icon: const Icon(Icons.info_outline),
+                    label: const Text('Acerca de', style: TextStyle(color: Colors.white)),
+                    icon: const Icon(Icons.info_outline, color: Colors.white),
                     backgroundColor: const Color.fromARGB(255, 11, 40, 64),
                   ),
                 ],

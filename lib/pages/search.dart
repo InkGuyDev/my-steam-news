@@ -89,8 +89,6 @@ class GameSearch extends SearchDelegate<String> {
 
           Navigator.push(context, MaterialPageRoute(builder: (context) => NewsGame(cardFormat: newsFormat, game: results[index])));
           close(context, results[index].titulo);
-
-          Navigator.push(context, MaterialPageRoute(builder: (context) => NewsGame(cardFormat: newsFormat, game: results[index])));
         },
       )
     );
@@ -133,10 +131,16 @@ class SearchPage extends StatelessWidget{
               foregroundColor: WidgetStateProperty.all(Colors.white),
             ),
             onPressed: () {
-              showSearch(
-                context: context,
-                delegate: GameSearch(gamesToSearch, newsFormat),
-              );
+              if (gamesToSearch.isNotEmpty) {
+                showSearch(
+                  context: context,
+                  delegate: GameSearch(gamesToSearch, newsFormat),
+                );
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Los juegos aún no han sido cargados')),
+                );
+              }
             }, 
             child: Row(
               children: [

@@ -57,7 +57,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Perfil'),
+        title: const Text('Perfil', style: TextStyle(color: Colors.white),),
         backgroundColor: const Color.fromARGB(255, 11, 40, 64),
       ),
       body: Padding(
@@ -68,6 +68,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
               controller: _idController,
               decoration: const InputDecoration(
                 labelText: 'Ingresa tu Steam ID',
+                labelStyle: TextStyle(color: Colors.white),
                 border: OutlineInputBorder(),
               ),
               keyboardType: TextInputType.number,
@@ -80,7 +81,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                   _loadUser(id);
                 }
               },
-              child: const Text('Cargar perfil'),
+              child: Text('Cargar perfil',),
             ),
             const SizedBox(height: 24),
             if (_name != null) ...[
