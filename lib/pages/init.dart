@@ -54,26 +54,26 @@ class _InitPageState extends State<InitPage> {
   @override
   void initState() {
     super.initState();
+    // Conseguir juegos (nombres e ids) de la app
+    serviceNew.getGameAppList().then((games) {
+      setState(() {
+        listGamesApp = games;
+      });
+      print('Ahora esta la lista de juegos de Steam cargados, a ver que pasa');
+
+      // Conseguir noticias de los primeros 30 juegos de la app
+      /*for (int i = games.length - 1; i >= games.length - 10; i--) {
+        serviceNew.getNews(games[i].id.toString(), '1').then((gamesNew) {
+          setState(() {
+            listGameNewsHome.addAll(gamesNew);
+          });
+        }).catchError((e) => print('failed to load game news'));
+      }*/
+    }).catchError((e) => print('failed to load game app list'));
   }
 
-  Future<void> loadIdInDataBase() async {
-    final prefs = await SharedPreferences.getInstance();
-
-    String? savedId = prefs.getString('steam_id');
-
-    savedId ??= '0';
-
-    context.read<Appdata>().setUsageID(int.parse(savedId));
-  }
-
-  void loadUserGames() {
-    if (context.read<Appdata>().usageId == 0) {
-      loadIdInDataBase();
-    }
-
-    final userId = context.read<Appdata>().usageId.toString();
-    userprof.id = context.read<Appdata>().usageId;
-    print(context.read<Appdata>().usageId.toString());
+  void loadUserGames(){
+    final userId = context.watch<Appdata>().usageId.toString();
     listGameUserHome.clear();
     _userLoaded = false;
 
@@ -105,34 +105,15 @@ class _InitPageState extends State<InitPage> {
                       listGameUserHome.addAll(news);
                     });
 
-                    print(
-                      'Se agregaron ${news.length} noticias con imágenes para ${gameDetail.titulo}',
-                    );
-                  })
-                  .catchError((e) {
-                    print('Error al obtener datos para $idGame: $e');
-                  });
-            }
+              print('Se agregaron ${news.length} noticias con imágenes para ${gameDetail.titulo}');
+            }).catchError((e) {
+              print('Error al obtener datos para $idGame: $e');
+            });
           }
-        })
-        .catchError((e) => print('failed to work with API data $e'));
-
-    // Conseguir juegos (nombres e ids) de la app
-    serviceNew
-        .getGameAppList()
-        .then((games) {
-          setState(() {
-            listGamesApp = games;
-          });
-      // Conseguir noticias de los primeros 30 juegos de la app
-      /*for (int i = games.length - 1; i >= games.length - 10; i--) {
-        serviceNew.getNews(games[i].id.toString(), '1').then((gamesNew) {
-          setState(() {
-            listGameNewsHome.addAll(gamesNew);
-          });
-        }).catchError((e) => print('failed to load game news'));
-      }*/
-    }).catchError((e) => print('failed to load game app list'));
+        }
+      })
+      .catchError((e) => print('failed to work with API data $e'));
+    
     
     //Juegos recientemente jugados
     serviceNew

@@ -86,9 +86,7 @@ class GameSearch extends SearchDelegate<String> {
         title: Text(results[index].titulo, style: TextStyle(color: Colors.white),),
         onTap: () {
           close(context, results[index].titulo);
-
           Navigator.push(context, MaterialPageRoute(builder: (context) => NewsGame(cardFormat: newsFormat, game: results[index])));
-          close(context, results[index].titulo);
         },
       )
     );
@@ -153,7 +151,7 @@ class SearchPage extends StatelessWidget{
         backgroundColor: const Color.fromARGB(253, 14, 56, 90),
       ),
       body: Center(
-        child: Column(
+        child: ListView(
           children: [
             SizedBox(height: 20,),
             Card( //Text('Search Page on development process . . . papu', style: TextStyle(color: Colors.white),),
