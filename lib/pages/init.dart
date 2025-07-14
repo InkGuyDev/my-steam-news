@@ -53,6 +53,22 @@ class _InitPageState extends State<InitPage> {
   @override
   void initState(){
     super.initState();
+    // Conseguir juegos (nombres e ids) de la app
+    serviceNew.getGameAppList().then((games) {
+      setState(() {
+        listGamesApp = games;
+      });
+      print('Ahora esta la lista de juegos de Steam cargados, a ver que pasa');
+
+      // Conseguir noticias de los primeros 30 juegos de la app
+      /*for (int i = games.length - 1; i >= games.length - 10; i--) {
+        serviceNew.getNews(games[i].id.toString(), '1').then((gamesNew) {
+          setState(() {
+            listGameNewsHome.addAll(gamesNew);
+          });
+        }).catchError((e) => print('failed to load game news'));
+      }*/
+    }).catchError((e) => print('failed to load game app list'));
   }
 
   void loadUserGames(){
@@ -93,22 +109,7 @@ class _InitPageState extends State<InitPage> {
       })
       .catchError((e) => print('failed to work with API data $e'));
     
-    // Conseguir juegos (nombres e ids) de la app
-    serviceNew.getGameAppList().then((games) {
-      setState(() {
-        listGamesApp = games;
-      });
-
-      // Conseguir noticias de los primeros 30 juegos de la app
-      /*for (int i = games.length - 1; i >= games.length - 10; i--) {
-        serviceNew.getNews(games[i].id.toString(), '1').then((gamesNew) {
-          setState(() {
-            listGameNewsHome.addAll(gamesNew);
-          });
-        }).catchError((e) => print('failed to load game news'));
-      }*/
-    }).catchError((e) => print('failed to load game app list'));
-
+    
     //Juegos recientemente jugados
     serviceNew.getRecentlyPlayedGames(userprof.id.toString()).then((games) {
       setState(() {
