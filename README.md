@@ -2,7 +2,9 @@
 
 **My Steam News** Te permite encontrar las ultimas noticias de los juegos disponibles en la tienda de Steam. Conectate a tu perfil y recibe las noticias de los juegos de tu biblioteca directamente al entrar a la aplicación. Explora los perfiles de tus amigos e enviales las noticas más interesantes y curiosas de sus juegos favoritos!!
 ---
-
+## Link de video exposición
+  https://youtu.be/z49lU8APxJE?si=kddnf-TQDTFfx0Hv
+---
 ## 🚀 Características principales
 
 - Busca cualquier elemento de la tienda de Steam para descubrir sus ultimas N noticias.
