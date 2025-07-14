@@ -62,13 +62,13 @@ class _InitPageState extends State<InitPage> {
       print('Ahora esta la lista de juegos de Steam cargados, a ver que pasa');
 
       // Conseguir noticias de los primeros 30 juegos de la app
-      /*for (int i = games.length - 1; i >= games.length - 10; i--) {
+      for (int i = games.length - 1; i >= games.length - 3; i--) {
         serviceNew.getNews(games[i].id.toString(), '1').then((gamesNew) {
           setState(() {
             listGameNewsHome.addAll(gamesNew);
           });
         }).catchError((e) => print('failed to load game news'));
-      }*/
+      }
     }).catchError((e) => print('failed to load game app list'));
   }
 
